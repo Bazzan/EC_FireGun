@@ -1,10 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 
-#include "Variant_Shooter/ShooterGameMode.h"
+#include "GameMode/ShooterGameMode.h"
 #include "ShooterUI.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+
+AShooterGameMode::AShooterGameMode() = default;
 
 void AShooterGameMode::BeginPlay()
 {

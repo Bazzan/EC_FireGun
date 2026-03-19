@@ -1,16 +1,21 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Characters/EC_PlayerCharacter.h"
+#include "AbilitySystem/EC_AttributeSet.h"
+#include "AbilitySystemComponent.h"
+#include "GameplayEffectTypes.h"
+#include "Player/EC_PlayerState.h"
 #include "ShooterWeapon.h"
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerState.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "TimerManager.h"
-#include "ShooterGameMode.h"
+#include "GameMode/ShooterGameMode.h"
 
 AEC_PlayerCharacter::AEC_PlayerCharacter()
 {
@@ -21,19 +26,121 @@ AEC_PlayerCharacter::AEC_PlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.0f, 0.0f);
 }
 
+UAbilitySystemComponent* AEC_PlayerCharacter::GetAbilitySystemComponent() const
+{
+	const AEC_PlayerState* ECPS = GetPlayerState<AEC_PlayerState>();
+	return ECPS ? ECPS->GetAbilitySystemComponent() : nullptr;
+}
+
 void AEC_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// reset HP to max
-	CurrentHP = MaxHP;
+	InitAbilityActorInfoIfNeeded();
+	RegisterHealthAttributeDelegate();
+	InitializeAuthorityHealthFromDefaults();
+}
 
-	// update the HUD
-	OnDamaged.Broadcast(1.0f);
+void AEC_PlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	InitAbilityActorInfoIfNeeded();
+	RegisterHealthAttributeDelegate();
+	InitializeAuthorityHealthFromDefaults();
+}
+
+void AEC_PlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	InitAbilityActorInfoIfNeeded();
+	RegisterHealthAttributeDelegate();
+}
+
+void AEC_PlayerCharacter::InitAbilityActorInfoIfNeeded()
+{
+	AEC_PlayerState* ECPS = GetPlayerState<AEC_PlayerState>();
+	if (!ECPS)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = ECPS->GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		return;
+	}
+
+	if (ASC->GetAvatarActor() == this && ASC->GetOwnerActor() == ECPS)
+	{
+		return;
+	}
+
+	ASC->InitAbilityActorInfo(ECPS, this);
+}
+
+void AEC_PlayerCharacter::RegisterHealthAttributeDelegate()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		return;
+	}
+
+	ASC->GetGameplayAttributeValueChangeDelegate(UEC_AttributeSet::GetHealthAttribute()).RemoveAll(this);
+	ASC->GetGameplayAttributeValueChangeDelegate(UEC_AttributeSet::GetHealthAttribute()).AddUObject(this, &AEC_PlayerCharacter::OnHealthAttributeChanged);
+}
+
+void AEC_PlayerCharacter::InitializeAuthorityHealthFromDefaults()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		return;
+	}
+
+	ASC->SetNumericAttributeBase(UEC_AttributeSet::GetMaxHealthAttribute(), MaxHP);
+	ASC->SetNumericAttributeBase(UEC_AttributeSet::GetHealthAttribute(), MaxHP);
+}
+
+void AEC_PlayerCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& Data)
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		return;
+	}
+
+	const float Max = ASC->GetNumericAttribute(UEC_AttributeSet::GetMaxHealthAttribute());
+	const float Cur = ASC->GetNumericAttribute(UEC_AttributeSet::GetHealthAttribute());
+	OnDamaged.Broadcast(Max > KINDA_SMALL_NUMBER ? FMath::Max(0.0f, Cur / Max) : 0.0f);
+
+	if (HasAuthority() && Cur <= 0.0f)
+	{
+		Die();
+	}
 }
 
 void AEC_PlayerCharacter::EndPlay(EEndPlayReason::Type EndPlayReason)
 {
+	if (AEC_PlayerState* ECPS = GetPlayerState<AEC_PlayerState>())
+	{
+		if (UAbilitySystemComponent* ASC = ECPS->GetAbilitySystemComponent())
+		{
+			ASC->GetGameplayAttributeValueChangeDelegate(UEC_AttributeSet::GetHealthAttribute()).RemoveAll(this);
+			if (ASC->GetAvatarActor() == this)
+			{
+				ASC->InitAbilityActorInfo(ECPS, nullptr);
+			}
+		}
+	}
+
 	Super::EndPlay(EndPlayReason);
 
 	// clear the respawn timer
@@ -59,23 +166,18 @@ void AEC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 float AEC_PlayerCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	// ignore if already dead
-	if (CurrentHP <= 0.0f)
+	if (!HasAuthority())
 	{
 		return 0.0f;
 	}
 
-	// Reduce HP
-	CurrentHP -= Damage;
-
-	// Have we depleted HP?
-	if (CurrentHP <= 0.0f)
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC || IsDead())
 	{
-		Die();
+		return 0.0f;
 	}
 
-	// update the HUD
-	OnDamaged.Broadcast(FMath::Max(0.0f, CurrentHP / MaxHP));
+	ASC->ApplyModToAttribute(UEC_AttributeSet::GetHealthAttribute(), EGameplayModOp::Additive, -Damage);
 
 	return Damage;
 }
@@ -281,6 +383,11 @@ AShooterWeapon* AEC_PlayerCharacter::FindWeaponOfType(TSubclassOf<AShooterWeapon
 
 void AEC_PlayerCharacter::Die()
 {
+	if (Tags.Contains(DeathTag))
+	{
+		return;
+	}
+
 	// deactivate the weapon
 	if (IsValid(CurrentWeapon))
 	{
@@ -320,7 +427,12 @@ void AEC_PlayerCharacter::OnRespawn()
 
 bool AEC_PlayerCharacter::IsDead() const
 {
-	// the character is dead if their current HP drops to zero
-	return CurrentHP <= 0.0f;
+	const UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		return false;
+	}
+
+	return ASC->GetNumericAttribute(UEC_AttributeSet::GetHealthAttribute()) <= 0.0f;
 }
 

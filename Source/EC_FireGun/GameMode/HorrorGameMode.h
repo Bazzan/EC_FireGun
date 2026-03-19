@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameMode/EC_FireGunGameModeBase.h"
 #include "HorrorGameMode.generated.h"
 
 /**
  *  Simple GameMode for a first person horror game
  */
 UCLASS(abstract)
-class EC_FIREGUN_API AHorrorGameMode : public AGameModeBase
+class EC_FIREGUN_API AHorrorGameMode : public AEC_FireGunGameModeBase
 {
 	GENERATED_BODY()
 	

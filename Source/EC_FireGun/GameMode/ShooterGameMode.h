@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameMode/EC_FireGunGameModeBase.h"
 #include "ShooterGameMode.generated.h"
 
 class UShooterUI;
@@ -14,10 +14,13 @@ class UShooterUI;
  *  Keeps track of team scores
  */
 UCLASS(abstract)
-class EC_FIREGUN_API AShooterGameMode : public AGameModeBase
+class EC_FIREGUN_API AShooterGameMode : public AEC_FireGunGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AShooterGameMode();
+
 protected:
 
 	/** Type of UI widget to spawn */

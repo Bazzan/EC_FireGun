@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/EC_Character.h"
+#include "AbilitySystemInterface.h"
 #include "ShooterWeaponHolder.h"
 #include "EC_PlayerCharacter.generated.h"
 
@@ -11,6 +12,8 @@ class AShooterWeapon;
 class UInputAction;
 class UInputComponent;
 class UPawnNoiseEmitterComponent;
+class UAbilitySystemComponent;
+struct FOnAttributeChangeData;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBulletCountUpdatedDelegate, int32, MagazineSize, int32, Bullets);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamagedDelegate, float, LifePercent);
@@ -18,9 +21,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamagedDelegate, float, LifePercent
 /**
  * Player controllable first person shooter character.
  * Manages weapon inventory and health/death flow.
+ * GAS lives on AEC_PlayerState; this pawn is the AbilitySystem avatar. AI minions keep ASC on the pawn.
  */
 UCLASS(Abstract)
-class EC_FIREGUN_API AEC_PlayerCharacter : public AEC_Character, public IShooterWeaponHolder
+class EC_FIREGUN_API AEC_PlayerCharacter : public AEC_Character, public IShooterWeaponHolder, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -50,12 +54,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Aim", meta = (ClampMin = 0, ClampMax = 100000, Units = "cm"))
 	float MaxAimDistance = 10000.0f;
 
-	/** Max HP this character can have */
+	/** Initial max health (applied to GAS MaxHealth on the authority at startup) */
 	UPROPERTY(EditAnywhere, Category="Health")
 	float MaxHP = 500.0f;
-
-	/** Current HP remaining to this character */
-	float CurrentHP = 0.0f;
 
 	/** Team ID for this character*/
 	UPROPERTY(EditAnywhere, Category="Team")
@@ -95,10 +96,17 @@ protected:
 	/** Gameplay cleanup */
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+
 	/** Set up input action bindings */
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
 public:
+
+	//~Begin IAbilitySystemInterface
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~End IAbilitySystemInterface
 
 	/** Handle incoming damage */
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
@@ -151,6 +159,11 @@ protected:
 	void BP_OnDeath();
 
 	void OnRespawn();
+
+	void InitAbilityActorInfoIfNeeded();
+	void RegisterHealthAttributeDelegate();
+	void InitializeAuthorityHealthFromDefaults();
+	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
 
 public:
 	bool IsDead() const;

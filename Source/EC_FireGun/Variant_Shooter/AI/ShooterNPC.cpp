@@ -7,7 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Engine/World.h"
-#include "ShooterGameMode.h"
+#include "GameMode/ShooterGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"

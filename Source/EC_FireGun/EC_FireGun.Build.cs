@@ -31,6 +31,9 @@ public class EC_FireGun : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] {
 			"EC_FireGun",
+			"EC_FireGun/AbilitySystem",
+			"EC_FireGun/GameMode",
+			"EC_FireGun/Player",
 			"EC_FireGun/Variant_Horror",
 			"EC_FireGun/Variant_Horror/UI",
 			"EC_FireGun/Variant_Shooter",
