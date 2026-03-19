@@ -1,0 +1,14 @@
+---
+description: Enforce project design document before making gameplay changes
+alwaysApply: true
+---
+
+# Design document enforcement
+
+- Before any code/design change, read `Docs/Design.md`.
+- Treat `Docs/Design.md` as the primary source of truth for gameplay, class identity, progression, and co-op systems.
+- In implementation responses, briefly state which design section(s) were followed.
+- If a request conflicts with the design doc, stop and ask for explicit approval before proceeding.
+- If required details are missing or ambiguous, ask clarifying questions before making changes.
+- Keep new systems consistent with the documented core loop, class roles, passive/ultimate philosophy, and roguelike progression.
+- Do not introduce new gameplay pillars or class mechanics that are not aligned with the design doc unless explicitly approved.

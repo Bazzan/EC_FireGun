@@ -1,0 +1,24 @@
+---
+description: Unreal Engine C++ standards for this repo
+alwaysApply: true
+---
+
+# Unreal C++ standards
+
+- Prefer Unreal types/macros: `UCLASS/USTRUCT/UENUM`, `UPROPERTY`, `UFUNCTION`, `TArray`, `TMap`, `TSet`, `TObjectPtr`, `TSoftObjectPtr`.
+- Use `UE_LOG` (not `printf/std::cout`) and keep logs meaningful (category + severity).
+- **Log categories:** Introduce a dedicated log category per feature (coherent gameplay or subsystem area), not a single shared category for everything. Use `DECLARE_LOG_CATEGORY_EXTERN` in a header and `DEFINE_LOG_CATEGORY` in one `.cpp` for that feature/module; name categories clearly (e.g. `LogWeapon`, `LogRoguelikeRun`). Reuse an existing category only when the log truly belongs to that same feature.
+- Never use raw `new`/`delete`. If you believe it’s necessary, stop and ask before adding any code that uses them; propose an Unreal-friendly alternative first (e.g. `NewObject`, components, `TUniquePtr` where appropriate).
+- Agent changes are limited to the `Source/` folder only (add/change/remove code only there). If a change is needed outside `Source/`, stop and ask first.
+- Redirects in `Config/DefaultEngine.ini` may be added only after explicit user approval in the current conversation.
+- All gameplay code changes must comply with `Docs/Design.md`; ask before deviating.
+- Networking model is listen-server: one player hosts and acts as the server during gameplay, and that host is authoritative for all server-side game logic.
+- All gameplay features must be implemented for listen-server authority first (host authoritative + client prediction/reconciliation only where needed), and must not assume dedicated-server-only behavior.
+- Null safety: check pointers before use; prefer `IsValid()` for UObject references when relevant.
+- Follow Unreal naming conventions (PascalCase types/functions, b-prefixed bool members, etc.).
+- Keep headers lean: forward-declare where possible; include in `.cpp` when you can.
+- Don’t block the game thread with heavy work; if needed, use async/tasks appropriately.
+- When editing gameplay code, consider replication (`Server/Client/NetMulticast`) and authority checks.
+- **Gameplay Ability System (GAS):** Implement character and world gameplay through GAS where it applies: use `UAbilitySystemComponent`, `UGameplayAbility`, `UGameplayEffect`, and Gameplay Tags for authority, costs, cooldowns, and replication. Examples include shooting/weapons, class passives and ultimates, pickups, interactions, and other player-triggered or AI-triggered actions. Prefer granting abilities and applying effects through GAS rather than ad-hoc timers or direct RPC-only logic for new features. When extending legacy code that is not yet on GAS, migrate toward GAS in the same change when reasonable, or ask before leaving new ability-shaped behavior outside GAS.
+- **Simplicity:** Do not over-engineer solutions. Prefer straightforward, readable code that matches Unreal and project patterns. Add abstraction, indirection, or generic frameworks only when there is a clear, immediate need; otherwise keep the smallest change that works.
+- Keep changes minimal and consistent with surrounding code style.

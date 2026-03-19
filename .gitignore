@@ -1,0 +1,28 @@
+# Unreal Engine
+/Binaries
+/DerivedDataCache
+/Intermediate
+/Saved
+/Build
+*.sln
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio / VS Code
+.vs/
+.vscode/*
+!.vscode/extensions.json
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# JetBrains Rider
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
