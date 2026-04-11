@@ -31,10 +31,10 @@ void UEC_AttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, f
 
 void UEC_AttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 {
-	GAMEPLAYATTRIBUTE_REINIT(Health, OldValue);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UEC_AttributeSet, Health, OldValue);
 }
 
 void UEC_AttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 {
-	GAMEPLAYATTRIBUTE_REINIT(MaxHealth, OldValue);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UEC_AttributeSet, MaxHealth, OldValue);
 }

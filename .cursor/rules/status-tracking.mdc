@@ -1,0 +1,29 @@
+---
+description: Keep Docs/STATUS.md up to date as a living project-status document
+alwaysApply: true
+---
+
+# Status tracking
+
+- At the **start** of every task session, read `Docs/STATUS.md` to understand what is in progress, what was recently completed, and any known issues.
+- At the **end** of any task that changes code, resolves a bug, or introduces new issues, update `Docs/STATUS.md` before finishing.
+- When updating, follow these rules:
+  - Update the *Last updated* line with the current date.
+  - Move finished items from **Current Focus** to **Recently Completed**.
+  - Add whatever you are actively working on to **Current Focus**.
+  - Record any new bugs or regressions in **Known Issues and Bugs**.
+  - Record tech-debt observations or fragile areas in **Potential Risks**.
+  - Use **Notes** for anything else relevant to future sessions.
+- Keep every entry concise (one line per item).
+- **Timestamps:** Prefix each entry with `[YYYY-MM-DD]` when it is added or meaningfully changed. This applies to all sections except **Notes**.
+- Keep at most ~10 entries in **Recently Completed**; trim the oldest when the list grows beyond that.
+- Keep `Docs/STATUS.md` under ~150 lines total. If it grows beyond that, trim the oldest entries from **Recently Completed** and **Notes** first, then condense older entries in other sections.
+- Never remove entries from **Known Issues and Bugs** unless the issue has been verified as fixed; when fixed, move the entry to **Recently Completed** with a brief note.
+
+## Blueprint TODOs tracking
+
+- When a code change requires new or updated Blueprint assets (GameplayEffects, ability BPs, widget BPs, data assets, etc.) or editor-side configuration, add a TODO to `Docs/Blueprint_TODOs.md`.
+- Group entries under a feature heading (e.g. `## GAS Shooting Abilities`).
+- Use `- [ ]` checkboxes so items can be ticked off in the editor.
+- Update the *Last updated* date when adding or completing items.
+- When a Blueprint TODO is completed (by the user in-editor), mark it `- [x]` and leave it for reference; remove only when the section is clearly stale.

@@ -11,6 +11,8 @@
 #include "Animation/AnimInstance.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Pawn.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
 
 AShooterWeapon::AShooterWeapon()
 {
@@ -56,6 +58,8 @@ void AShooterWeapon::BeginPlay()
 
 void AShooterWeapon::EndPlay(EEndPlayReason::Type EndPlayReason)
 {
+	RevokeShootAbility();
+
 	Super::EndPlay(EndPlayReason);
 
 	// clear the refire timer
@@ -73,6 +77,9 @@ void AShooterWeapon::ActivateWeapon()
 	// unhide this weapon
 	SetActorHiddenInGame(false);
 
+	// grant the shoot ability to the owner's ASC
+	GrantShootAbility();
+
 	// notify the owner
 	WeaponOwner->OnWeaponActivated(this);
 }
@@ -81,6 +88,9 @@ void AShooterWeapon::DeactivateWeapon()
 {
 	// ensure we're no longer firing this weapon while deactivated
 	StopFiring();
+
+	// revoke the shoot ability from the owner's ASC
+	RevokeShootAbility();
 
 	// hide the weapon
 	SetActorHiddenInGame(true);
@@ -161,17 +171,27 @@ void AShooterWeapon::FireCooldownExpired()
 
 void AShooterWeapon::FireProjectile(const FVector& TargetLocation)
 {
-	// get the projectile transform
-	FTransform ProjectileTransform = CalculateProjectileSpawnTransform(TargetLocation);
-	
-	// spawn the projectile
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.TransformScaleMethod = ESpawnActorScaleMethod::OverrideRootScale;
-	SpawnParams.Owner = GetOwner();
-	SpawnParams.Instigator = PawnOwner;
+	if (GrantedAbilityHandle.IsValid())
+	{
+		// GAS path: activate the shoot ability via the owner's ASC
+		if (UAbilitySystemComponent* ASC = GetOwnerASC())
+		{
+			ASC->TryActivateAbility(GrantedAbilityHandle);
+		}
+	}
+	else
+	{
+		// Legacy path: spawn projectile directly
+		FTransform ProjectileTransform = CalculateProjectileSpawnTransform(TargetLocation);
 
-	AShooterProjectile* Projectile = GetWorld()->SpawnActor<AShooterProjectile>(ProjectileClass, ProjectileTransform, SpawnParams);
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.TransformScaleMethod = ESpawnActorScaleMethod::OverrideRootScale;
+		SpawnParams.Owner = GetOwner();
+		SpawnParams.Instigator = PawnOwner;
+
+		GetWorld()->SpawnActor<AShooterProjectile>(ProjectileClass, ProjectileTransform, SpawnParams);
+	}
 
 	// play the firing montage
 	WeaponOwner->PlayFiringMontage(FiringMontage);
@@ -215,4 +235,42 @@ const TSubclassOf<UAnimInstance>& AShooterWeapon::GetFirstPersonAnimInstanceClas
 const TSubclassOf<UAnimInstance>& AShooterWeapon::GetThirdPersonAnimInstanceClass() const
 {
 	return ThirdPersonAnimInstanceClass;
+}
+
+UAbilitySystemComponent* AShooterWeapon::GetOwnerASC() const
+{
+	const IAbilitySystemInterface* ASI = Cast<IAbilitySystemInterface>(GetOwner());
+	return ASI ? ASI->GetAbilitySystemComponent() : nullptr;
+}
+
+void AShooterWeapon::GrantShootAbility()
+{
+	if (!ShootAbilityClass)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = GetOwnerASC();
+	if (!ASC)
+	{
+		return;
+	}
+
+	FGameplayAbilitySpec Spec(ShootAbilityClass, 1, INDEX_NONE, this);
+	GrantedAbilityHandle = ASC->GiveAbility(Spec);
+}
+
+void AShooterWeapon::RevokeShootAbility()
+{
+	if (!GrantedAbilityHandle.IsValid())
+	{
+		return;
+	}
+
+	if (UAbilitySystemComponent* ASC = GetOwnerASC())
+	{
+		ASC->ClearAbility(GrantedAbilityHandle);
+	}
+
+	GrantedAbilityHandle = FGameplayAbilitySpecHandle();
 }

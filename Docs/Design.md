@@ -171,6 +171,7 @@ The design goal is replayable runs with strong class identity, team synergy, and
 - Character and interactable gameplay is implemented with Unreal’s **Gameplay Ability System** where it fits: abilities, effects, tags, costs, and cooldowns live in GAS—not one-off bespoke systems for each feature.
 - **Scope:** shooting and weapons, class passives and ultimates, pickups, world interactions, and other actions triggered by players or AI that behave like abilities (activation, duration, stacking, replication).
 - **Patterns:** `UAbilitySystemComponent` on pawns; `UGameplayAbility` for activatable behavior; `UGameplayEffect` for stat changes and buffs/debuffs; **Gameplay Tags** for states, prerequisites, and cancellation.
+- **Damage & effects rule:** All damage dealing and status effects that originate from a `UGameplayAbility` **must** go through `UGameplayEffect`. Do not use `UGameplayStatics::ApplyDamage` or direct `TakeDamage` calls from ability code. This ensures consistent interaction with attribute clamping, replication, and tag-based immunity.
 - **Networking:** align with the listen-server model: server-authoritative activation and effect application; use GAS replication features instead of ad-hoc RPC chains for new ability-shaped features.
 - **Legacy:** existing non-GAS code may remain until refactored; new features and meaningful extensions should move toward GAS. Prefer the smallest GAS setup that satisfies the design (avoid unnecessary abstraction layers).
 

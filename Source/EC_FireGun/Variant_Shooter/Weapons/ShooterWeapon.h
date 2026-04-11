@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "ShooterWeaponHolder.h"
 #include "Animation/AnimInstance.h"
 #include "ShooterWeapon.generated.h"
@@ -13,6 +14,8 @@ class AShooterProjectile;
 class USkeletalMeshComponent;
 class UAnimMontage;
 class UAnimInstance;
+class UGameplayAbility;
+class UAbilitySystemComponent;
 
 /**
  *  Base class for a simple first person shooter weapon
@@ -109,6 +112,17 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Perception")
 	FName ShotNoiseTag = FName("Shot");
 
+	/**
+	 * GAS ability this weapon activates when firing.
+	 * If set, FireProjectile routes through the ASC instead of spawning legacy projectiles.
+	 * Assign a BP child of UGA_ShootHitscan or UGA_ShootProjectile.
+	 */
+	UPROPERTY(EditAnywhere, Category="Ability")
+	TSubclassOf<UGameplayAbility> ShootAbilityClass;
+
+	/** Handle to the ability granted by this weapon, used for revocation and activation. */
+	FGameplayAbilitySpecHandle GrantedAbilityHandle;
+
 public:	
 
 	/** Constructor */
@@ -155,6 +169,15 @@ protected:
 
 	/** Calculates the spawn transform for projectiles shot by this weapon */
 	FTransform CalculateProjectileSpawnTransform(const FVector& TargetLocation) const;
+
+	/** Returns the owner pawn's ASC, or nullptr if unavailable. */
+	UAbilitySystemComponent* GetOwnerASC() const;
+
+	/** Grants ShootAbilityClass to the owner's ASC if configured. */
+	void GrantShootAbility();
+
+	/** Revokes a previously granted shoot ability from the owner's ASC. */
+	void RevokeShootAbility();
 
 public:
 

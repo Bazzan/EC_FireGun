@@ -2,6 +2,9 @@
 
 
 #include "Variant_Shooter/AI/ShooterNPC.h"
+#include "AbilitySystem/EC_AttributeSet.h"
+#include "AbilitySystemComponent.h"
+#include "EC_GameplayTags.h"
 #include "ShooterWeapon.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
@@ -12,11 +15,29 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
 
+AShooterNPC::AShooterNPC()
+{
+	bReplicateUsingRegisteredSubObjectList = true;
+
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	ECAttributeSet = CreateDefaultSubobject<UEC_AttributeSet>(TEXT("ECAttributeSet"));
+	AbilitySystemComponent->AddSpawnedAttribute(ECAttributeSet);
+}
+
+UAbilitySystemComponent* AShooterNPC::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 void AShooterNPC::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// spawn the weapon
+	InitializeAbilitySystem();
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = this;
@@ -27,28 +48,26 @@ void AShooterNPC::BeginPlay()
 
 void AShooterNPC::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			UEC_AttributeSet::GetHealthAttribute()).RemoveAll(this);
+	}
+
 	Super::EndPlay(EndPlayReason);
 
-	// clear the death timer
 	GetWorld()->GetTimerManager().ClearTimer(DeathTimer);
 }
 
 float AShooterNPC::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	// ignore if already dead
-	if (bIsDead)
+	if (!HasAuthority() || bIsDead || !AbilitySystemComponent)
 	{
 		return 0.0f;
 	}
 
-	// Reduce HP
-	CurrentHP -= Damage;
-
-	// Have we depleted HP?
-	if (CurrentHP <= 0.0f)
-	{
-		Die();
-	}
+	AbilitySystemComponent->ApplyModToAttribute(
+		UEC_AttributeSet::GetHealthAttribute(), EGameplayModOp::Additive, -Damage);
 
 	return Damage;
 }
@@ -150,19 +169,20 @@ void AShooterNPC::OnSemiWeaponRefire()
 
 void AShooterNPC::Die()
 {
-	// ignore if already dead
 	if (bIsDead)
 	{
 		return;
 	}
 
-	// raise the dead flag
 	bIsDead = true;
 
-	// grant the death tag to the character
 	Tags.Add(DeathTag);
 
-	// call the delegate
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->AddLooseGameplayTag(EC_GameplayTags::State_Dead);
+	}
+
 	OnPawnDeath.Broadcast();
 
 	// increment the team score
@@ -190,6 +210,40 @@ void AShooterNPC::Die()
 void AShooterNPC::DeferredDestruction()
 {
 	Destroy();
+}
+
+void AShooterNPC::InitializeAbilitySystem()
+{
+	if (!AbilitySystemComponent)
+	{
+		return;
+	}
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+	if (HasAuthority())
+	{
+		AbilitySystemComponent->SetNumericAttributeBase(
+			UEC_AttributeSet::GetMaxHealthAttribute(), DefaultMaxHealth);
+		AbilitySystemComponent->SetNumericAttributeBase(
+			UEC_AttributeSet::GetHealthAttribute(), DefaultMaxHealth);
+	}
+
+	CurrentHP = AbilitySystemComponent->GetNumericAttribute(UEC_AttributeSet::GetHealthAttribute());
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		UEC_AttributeSet::GetHealthAttribute())
+		.AddUObject(this, &AShooterNPC::OnHealthAttributeChanged);
+}
+
+void AShooterNPC::OnHealthAttributeChanged(const FOnAttributeChangeData& Data)
+{
+	CurrentHP = Data.NewValue;
+
+	if (HasAuthority() && Data.NewValue <= 0.0f)
+	{
+		Die();
+	}
 }
 
 void AShooterNPC::StartShooting(AActor* ActorToShoot)

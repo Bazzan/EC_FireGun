@@ -4,28 +4,43 @@
 
 #include "CoreMinimal.h"
 #include "Characters/EC_Character.h"
+#include "AbilitySystemInterface.h"
 #include "ShooterWeaponHolder.h"
 #include "ShooterNPC.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPawnDeathDelegate);
 
 class AShooterWeapon;
+class UAbilitySystemComponent;
+class UEC_AttributeSet;
+struct FOnAttributeChangeData;
 
 /**
  *  A simple AI-controlled shooter game NPC
  *  Executes its behavior through a StateTree managed by its AI Controller
  *  Holds and manages a weapon
+ *  Owns a pawn-level AbilitySystemComponent so GAS damage can affect it.
  */
 UCLASS(abstract)
-class EC_FIREGUN_API AShooterNPC : public AEC_Character, public IShooterWeaponHolder
+class EC_FIREGUN_API AShooterNPC : public AEC_Character, public IShooterWeaponHolder, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 
-	/** Current HP for this character. It dies if it reaches zero through damage */
+	AShooterNPC();
+
+	/** Starting / max health used to initialize the GAS Health attribute. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Damage")
+	float DefaultMaxHealth = 100.0f;
+
+	/** Runtime mirror of the GAS Health attribute. Kept in sync via attribute delegate. */
+	UPROPERTY(BlueprintReadOnly, Category="Damage")
 	float CurrentHP = 100.0f;
+
+	//~Begin IAbilitySystemInterface
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~End IAbilitySystemInterface
 
 protected:
 
@@ -88,6 +103,12 @@ protected:
 	/** Deferred destruction on death timer */
 	FTimerHandle DeathTimer;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UEC_AttributeSet> ECAttributeSet;
+
 public:
 
 	/** Delegate called when this NPC dies */
@@ -146,6 +167,12 @@ protected:
 
 	/** Called after death to destroy the actor */
 	void DeferredDestruction();
+
+	/** Initializes ASC actor info and Health/MaxHealth attributes from defaults. */
+	void InitializeAbilitySystem();
+
+	/** Callback when the Health attribute changes; triggers Die() at zero. */
+	void OnHealthAttributeChanged(const FOnAttributeChangeData& Data);
 
 public:
 

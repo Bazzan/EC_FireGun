@@ -22,6 +22,7 @@ public class EC_FireGun : ModuleRules
 			"Slate",
 			"GameplayAbilities",
 			"GameplayTags",
+			"GameplayTasks",
 			"StructUtils",
 			"ModularGameplay",
 			"AbilitySystemGameFeatureActions",
@@ -32,6 +33,8 @@ public class EC_FireGun : ModuleRules
 		PublicIncludePaths.AddRange(new string[] {
 			"EC_FireGun",
 			"EC_FireGun/AbilitySystem",
+			"EC_FireGun/AbilitySystem/Abilities",
+			"EC_FireGun/AbilitySystem/Projectile",
 			"EC_FireGun/GameMode",
 			"EC_FireGun/Player",
 			"EC_FireGun/Variant_Horror",
