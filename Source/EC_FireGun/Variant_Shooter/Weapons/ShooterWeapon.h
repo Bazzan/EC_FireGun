@@ -115,7 +115,7 @@ protected:
 	/**
 	 * GAS ability this weapon activates when firing.
 	 * If set, FireProjectile routes through the ASC instead of spawning legacy projectiles.
-	 * Assign a BP child of UGA_ShootHitscan or UGA_ShootProjectile.
+	 * Assign a BP child of UShootHitscanAbility or UShootProjectileAbility.
 	 */
 	UPROPERTY(EditAnywhere, Category="Ability")
 	TSubclassOf<UGameplayAbility> ShootAbilityClass;

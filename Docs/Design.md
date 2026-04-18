@@ -55,6 +55,9 @@ The design goal is replayable runs with strong class identity, team synergy, and
   - High-impact team utility, damage, or control.
   - Clear activation telegraph and UI feedback.
   - Charge/cooldown tuned for one meaningful use every 2-3 encounters.
+- Grenade:
+  - Each class has its own grenade variant tied to class identity.
+  - Short cooldown (multiple uses per encounter), readable telegraph, server-authoritative detonation.
 
 ## 5.3 Starter Class Concepts
 

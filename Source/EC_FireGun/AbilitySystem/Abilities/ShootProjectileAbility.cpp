@@ -1,16 +1,17 @@
-#include "AbilitySystem/Abilities/GA_ShootProjectile.h"
+#include "AbilitySystem/Abilities/ShootProjectileAbility.h"
 #include "AbilitySystem/Projectile/ECProjectile.h"
+#include "AbilitySystem/EC_AttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "EC_GameplayTags.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 
-UGA_ShootProjectile::UGA_ShootProjectile()
+UShootProjectileAbility::UShootProjectileAbility()
 {
 	AbilityTags.AddTag(EC_GameplayTags::Ability_Shoot_Projectile);
 }
 
-void UGA_ShootProjectile::ActivateAbility(
+void UShootProjectileAbility::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,
@@ -25,14 +26,14 @@ void UGA_ShootProjectile::ActivateAbility(
 	FAimData Aim;
 	if (!GetAimData(Aim))
 	{
-		UE_LOG(LogWeapon, Warning, TEXT("GA_ShootProjectile: could not get aim data"));
+		UE_LOG(LogWeapon, Warning, TEXT("ShootProjectileAbility: could not get aim data"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 
 	if (!ProjectileClass)
 	{
-		UE_LOG(LogWeapon, Error, TEXT("GA_ShootProjectile: ProjectileClass is null"));
+		UE_LOG(LogWeapon, Error, TEXT("ShootProjectileAbility: ProjectileClass is null"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
@@ -50,10 +51,20 @@ void UGA_ShootProjectile::ActivateAbility(
 
 	if (Projectile)
 	{
-		Projectile->InitDamage(
-			DamageEffect,
-			BaseDamage,
-			GetAbilitySystemComponentFromActorInfo());
+		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
+
+		float ScaledDamage = BaseDamage;
+		if (SourceASC)
+		{
+			const float Multiplier = SourceASC->GetNumericAttribute(
+				UEC_AttributeSet::GetOutgoingDamageMultiplierAttribute());
+			if (Multiplier > 0.0f)
+			{
+				ScaledDamage *= Multiplier;
+			}
+		}
+
+		Projectile->InitDamage(DamageEffect, ScaledDamage, SourceASC);
 	}
 
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);

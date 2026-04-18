@@ -11,7 +11,7 @@ class UAbilitySystemComponent;
 class UGameplayEffect;
 
 /**
- * Replicated traveling projectile spawned by GA_ShootProjectile.
+ * Replicated traveling projectile spawned by UShootProjectileAbility.
  * Applies GAS-based damage on collision via a pre-built GameplayEffectSpec.
  */
 UCLASS(Abstract)

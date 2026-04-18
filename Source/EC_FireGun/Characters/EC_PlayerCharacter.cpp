@@ -2,7 +2,9 @@
 
 #include "Characters/EC_PlayerCharacter.h"
 #include "AbilitySystem/EC_AttributeSet.h"
+#include "AbilitySystem/EC_GameplayAbility.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayAbilitySpec.h"
 #include "GameplayEffectTypes.h"
 #include "Player/EC_PlayerState.h"
 #include "ShooterWeapon.h"
@@ -39,6 +41,7 @@ void AEC_PlayerCharacter::BeginPlay()
 	InitAbilityActorInfoIfNeeded();
 	RegisterHealthAttributeDelegate();
 	InitializeAuthorityHealthFromDefaults();
+	GrantClassAbilitiesIfNeeded();
 }
 
 void AEC_PlayerCharacter::PossessedBy(AController* NewController)
@@ -48,6 +51,7 @@ void AEC_PlayerCharacter::PossessedBy(AController* NewController)
 	InitAbilityActorInfoIfNeeded();
 	RegisterHealthAttributeDelegate();
 	InitializeAuthorityHealthFromDefaults();
+	GrantClassAbilitiesIfNeeded();
 }
 
 void AEC_PlayerCharacter::OnRep_PlayerState()
@@ -129,6 +133,8 @@ void AEC_PlayerCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData&
 
 void AEC_PlayerCharacter::EndPlay(EEndPlayReason::Type EndPlayReason)
 {
+	ClearGrantedClassAbilities();
+
 	if (AEC_PlayerState* ECPS = GetPlayerState<AEC_PlayerState>())
 	{
 		if (UAbilitySystemComponent* ASC = ECPS->GetAbilitySystemComponent())
@@ -147,6 +153,63 @@ void AEC_PlayerCharacter::EndPlay(EEndPlayReason::Type EndPlayReason)
 	GetWorld()->GetTimerManager().ClearTimer(RespawnTimer);
 }
 
+void AEC_PlayerCharacter::GrantClassAbilitiesIfNeeded()
+{
+	if (bClassAbilitiesGranted || !HasAuthority())
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		return;
+	}
+
+	auto GrantOne = [this, ASC](TSubclassOf<UEC_GameplayAbility> AbilityClass)
+	{
+		if (!AbilityClass)
+		{
+			return;
+		}
+		FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
+		const FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
+		if (Handle.IsValid())
+		{
+			GrantedClassAbilityHandles.Add(Handle);
+		}
+	};
+
+	GrantOne(UltimateAbilityClass);
+	GrantOne(GrenadeAbilityClass);
+
+	bClassAbilitiesGranted = true;
+}
+
+void AEC_PlayerCharacter::ClearGrantedClassAbilities()
+{
+	if (!HasAuthority() || GrantedClassAbilityHandles.Num() == 0)
+	{
+		GrantedClassAbilityHandles.Reset();
+		bClassAbilitiesGranted = false;
+		return;
+	}
+
+	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		for (const FGameplayAbilitySpecHandle& Handle : GrantedClassAbilityHandles)
+		{
+			if (Handle.IsValid())
+			{
+				ASC->ClearAbility(Handle);
+			}
+		}
+	}
+
+	GrantedClassAbilityHandles.Reset();
+	bClassAbilitiesGranted = false;
+}
+
 void AEC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// base class handles move, aim and jump inputs
@@ -161,6 +224,16 @@ void AEC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		// Switch weapon
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::DoSwitchWeapon);
+
+		// Ultimate / Grenade (skipped if action is not assigned in BP)
+		if (UltimateAction)
+		{
+			EnhancedInputComponent->BindAction(UltimateAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::DoActivateUltimate);
+		}
+		if (GrenadeAction)
+		{
+			EnhancedInputComponent->BindAction(GrenadeAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::DoActivateGrenade);
+		}
 	}
 }
 
@@ -264,6 +337,32 @@ void AEC_PlayerCharacter::DoSwitchWeapon()
 
 		// activate the new weapon
 		CurrentWeapon->ActivateWeapon();
+	}
+}
+
+void AEC_PlayerCharacter::DoActivateUltimate()
+{
+	if (IsDead() || !UltimateAbilityClass)
+	{
+		return;
+	}
+
+	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->TryActivateAbilityByClass(UltimateAbilityClass);
+	}
+}
+
+void AEC_PlayerCharacter::DoActivateGrenade()
+{
+	if (IsDead() || !GrenadeAbilityClass)
+	{
+		return;
+	}
+
+	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->TryActivateAbilityByClass(GrenadeAbilityClass);
 	}
 }
 

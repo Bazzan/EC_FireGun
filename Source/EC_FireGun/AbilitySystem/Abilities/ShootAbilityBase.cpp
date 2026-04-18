@@ -1,4 +1,5 @@
-#include "AbilitySystem/Abilities/GA_ShootBase.h"
+#include "AbilitySystem/Abilities/ShootAbilityBase.h"
+#include "AbilitySystem/EC_AttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "Characters/EC_PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
@@ -7,7 +8,7 @@
 
 DEFINE_LOG_CATEGORY(LogWeapon);
 
-UGA_ShootBase::UGA_ShootBase()
+UShootAbilityBase::UShootAbilityBase()
 {
 	FGameplayTagContainer Tags;
 	Tags.AddTag(EC_GameplayTags::Ability_Shoot);
@@ -16,7 +17,7 @@ UGA_ShootBase::UGA_ShootBase()
 	ActivationBlockedTags.AddTag(EC_GameplayTags::State_Dead);
 }
 
-bool UGA_ShootBase::GetAimData(FAimData& OutAim) const
+bool UShootAbilityBase::GetAimData(FAimData& OutAim) const
 {
 	const AEC_PlayerCharacter* PC = GetEC_PlayerCharacter();
 	if (!PC)
@@ -36,7 +37,7 @@ bool UGA_ShootBase::GetAimData(FAimData& OutAim) const
 	return true;
 }
 
-bool UGA_ShootBase::ApplyDamageToTarget(UAbilitySystemComponent* TargetASC) const
+bool UShootAbilityBase::ApplyDamageToTarget(UAbilitySystemComponent* TargetASC) const
 {
 	if (!TargetASC || !DamageEffect)
 	{
@@ -55,7 +56,11 @@ bool UGA_ShootBase::ApplyDamageToTarget(UAbilitySystemComponent* TargetASC) cons
 		return false;
 	}
 
-	SpecHandle.Data->SetSetByCallerMagnitude(EC_GameplayTags::Data_Damage, -BaseDamage);
+	const float Multiplier = SourceASC->GetNumericAttribute(
+		UEC_AttributeSet::GetOutgoingDamageMultiplierAttribute());
+	const float ScaledDamage = BaseDamage * (Multiplier > 0.0f ? Multiplier : 1.0f);
+
+	SpecHandle.Data->SetSetByCallerMagnitude(EC_GameplayTags::Data_Damage, -ScaledDamage);
 	SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, TargetASC);
 	return true;
 }

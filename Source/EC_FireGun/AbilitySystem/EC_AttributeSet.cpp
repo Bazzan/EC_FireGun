@@ -7,6 +7,7 @@ UEC_AttributeSet::UEC_AttributeSet()
 {
 	InitHealth(500.0f);
 	InitMaxHealth(500.0f);
+	InitOutgoingDamageMultiplier(1.0f);
 }
 
 void UEC_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -15,6 +16,7 @@ void UEC_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UEC_AttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UEC_AttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UEC_AttributeSet, OutgoingDamageMultiplier, COND_None, REPNOTIFY_Always);
 }
 
 void UEC_AttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -27,6 +29,10 @@ void UEC_AttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, f
 	{
 		NewValue = FMath::Max(NewValue, 1.0f);
 	}
+	else if (Attribute == GetOutgoingDamageMultiplierAttribute())
+	{
+		NewValue = FMath::Max(NewValue, 0.0f);
+	}
 }
 
 void UEC_AttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)
@@ -37,4 +43,9 @@ void UEC_AttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 void UEC_AttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UEC_AttributeSet, MaxHealth, OldValue);
+}
+
+void UEC_AttributeSet::OnRep_OutgoingDamageMultiplier(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UEC_AttributeSet, OutgoingDamageMultiplier, OldValue);
 }

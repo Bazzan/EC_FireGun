@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/EC_Character.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "ShooterWeaponHolder.h"
 #include "EC_PlayerCharacter.generated.h"
 
@@ -13,6 +14,7 @@ class UInputAction;
 class UInputComponent;
 class UPawnNoiseEmitterComponent;
 class UAbilitySystemComponent;
+class UEC_GameplayAbility;
 struct FOnAttributeChangeData;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBulletCountUpdatedDelegate, int32, MagazineSize, int32, Bullets);
@@ -41,6 +43,22 @@ protected:
 	/** Switch weapon input action */
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* SwitchWeaponAction;
+
+	/** Activate Ultimate input action (default key: X) */
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* UltimateAction;
+
+	/** Throw Grenade input action (default key: G) */
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* GrenadeAction;
+
+	/** Class Ultimate ability granted on possession (e.g. BP_UltimateAbility_GunslingerFocus) */
+	UPROPERTY(EditAnywhere, Category ="Ability")
+	TSubclassOf<UEC_GameplayAbility> UltimateAbilityClass;
+
+	/** Class Grenade ability granted on possession (e.g. BP_GrenadeAbility_GunslingerFrag) */
+	UPROPERTY(EditAnywhere, Category ="Ability")
+	TSubclassOf<UEC_GameplayAbility> GrenadeAbilityClass;
 
 	/** Name of the first person mesh weapon socket */
 	UPROPERTY(EditAnywhere, Category ="Weapons")
@@ -137,6 +155,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoSwitchWeapon();
 
+	/** Tries to activate the granted Ultimate ability via the ASC. */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoActivateUltimate();
+
+	/** Tries to activate the granted Grenade ability via the ASC. */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoActivateGrenade();
+
 public:
 
 	//~Begin IShooterWeaponHolder interface
@@ -164,6 +190,11 @@ protected:
 	void RegisterHealthAttributeDelegate();
 	void InitializeAuthorityHealthFromDefaults();
 	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
+	void GrantClassAbilitiesIfNeeded();
+	void ClearGrantedClassAbilities();
+
+	bool bClassAbilitiesGranted = false;
+	TArray<FGameplayAbilitySpecHandle> GrantedClassAbilityHandles;
 
 public:
 	bool IsDead() const;

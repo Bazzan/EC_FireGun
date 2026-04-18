@@ -6,12 +6,12 @@ C++ game modes live under `Source/EC_FireGun/GameMode/` (`AEC_FireGunGameModeBas
 
 ## Game modes per map
 
-- [ ] **Hub map(s)** — *World Settings → Game Mode → GameMode Override* → `AEC_HubGameMode` or a Blueprint child (e.g. `BP_HubGameMode`).
-- [ ] **Run / gameplay map(s)** — same → a **subclass** of `AEC_FireGunGameMode` (e.g. `BP_FireGunGameMode`). `AEC_FireGunGameMode` is abstract in C++; use a BP child unless you change it to non-abstract.
+- [x] **Hub map (`LVL_Hub`)** — Created with `GM_Hub` (BP child of `AEC_HubGameMode`). Verify *World Settings → GameMode Override* is set to `GM_Hub` in the editor.
+- [ ] **Run / gameplay map(s)** — Set *World Settings → GameMode Override* to `GM_FireGun` (BP child of `AEC_FireGunGameMode`) on `LVL_StartZone01` and any future run maps.
 
 ## Project defaults
 
-- [ ] **Edit → Project Settings → Maps & Modes** — set **Default GameMode** to the mode that matches your usual startup map (hub or test run).
+- [x] **Edit → Project Settings → Maps & Modes** — Default GameMode set to `GM_Hub`, default map and editor startup map set to `LVL_Hub`.
 
 ## Blueprint game modes
 

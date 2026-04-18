@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/GA_ShootBase.h"
-#include "GA_ShootHitscan.generated.h"
+#include "AbilitySystem/Abilities/ShootAbilityBase.h"
+#include "ShootHitscanAbility.generated.h"
 
 /**
  * Hitscan shooting ability.
@@ -10,12 +10,12 @@
  * to the first valid target hit.
  */
 UCLASS()
-class EC_FIREGUN_API UGA_ShootHitscan : public UGA_ShootBase
+class EC_FIREGUN_API UShootHitscanAbility : public UShootAbilityBase
 {
 	GENERATED_BODY()
 
 public:
-	UGA_ShootHitscan();
+	UShootHitscanAbility();
 
 protected:
 	/** Collision channel used for the hitscan trace. */

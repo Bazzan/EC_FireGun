@@ -30,6 +30,7 @@ public:
 
 	ATTRIBUTE_ACCESSORS(UEC_AttributeSet, Health);
 	ATTRIBUTE_ACCESSORS(UEC_AttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UEC_AttributeSet, OutgoingDamageMultiplier);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
@@ -38,9 +39,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
 	FGameplayAttributeData MaxHealth;
 
+	/** Multiplier applied to outgoing ability damage at the source (default 1.0). Buffs like Focus scale this. */
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_OutgoingDamageMultiplier, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
+	FGameplayAttributeData OutgoingDamageMultiplier;
+
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldValue);
 
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	void OnRep_OutgoingDamageMultiplier(const FGameplayAttributeData& OldValue);
 };

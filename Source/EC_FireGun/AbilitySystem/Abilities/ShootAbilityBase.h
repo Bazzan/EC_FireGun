@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/EC_GameplayAbility.h"
-#include "GA_ShootBase.generated.h"
+#include "ShootAbilityBase.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogWeapon, Log, All);
 
@@ -15,12 +15,12 @@ class UGameplayEffect;
  * the actual hit-detection strategy.
  */
 UCLASS(Abstract)
-class EC_FIREGUN_API UGA_ShootBase : public UEC_GameplayAbility
+class EC_FIREGUN_API UShootAbilityBase : public UEC_GameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UGA_ShootBase();
+	UShootAbilityBase();
 
 protected:
 	/** GameplayEffect applied to targets on hit (should use SetByCaller for Data.Damage). */

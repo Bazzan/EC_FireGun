@@ -1,15 +1,15 @@
-#include "AbilitySystem/Abilities/GA_ShootHitscan.h"
+#include "AbilitySystem/Abilities/ShootHitscanAbility.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "EC_GameplayTags.h"
 #include "Engine/World.h"
 
-UGA_ShootHitscan::UGA_ShootHitscan()
+UShootHitscanAbility::UShootHitscanAbility()
 {
 	AbilityTags.AddTag(EC_GameplayTags::Ability_Shoot_Hitscan);
 }
 
-void UGA_ShootHitscan::ActivateAbility(
+void UShootHitscanAbility::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,
@@ -24,7 +24,7 @@ void UGA_ShootHitscan::ActivateAbility(
 	FAimData Aim;
 	if (!GetAimData(Aim))
 	{
-		UE_LOG(LogWeapon, Warning, TEXT("GA_ShootHitscan: could not get aim data"));
+		UE_LOG(LogWeapon, Warning, TEXT("ShootHitscanAbility: could not get aim data"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/GA_ShootBase.h"
-#include "GA_ShootProjectile.generated.h"
+#include "AbilitySystem/Abilities/ShootAbilityBase.h"
+#include "ShootProjectileAbility.generated.h"
 
 class AECProjectile;
 
@@ -12,12 +12,12 @@ class AECProjectile;
  * The projectile handles its own travel, collision, and damage application.
  */
 UCLASS()
-class EC_FIREGUN_API UGA_ShootProjectile : public UGA_ShootBase
+class EC_FIREGUN_API UShootProjectileAbility : public UShootAbilityBase
 {
 	GENERATED_BODY()
 
 public:
-	UGA_ShootProjectile();
+	UShootProjectileAbility();
 
 protected:
 	/** Projectile class to spawn. */
