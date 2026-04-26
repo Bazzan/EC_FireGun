@@ -34,5 +34,5 @@ protected:
 
 	/** Blueprint hook called when the trace misses everything. */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Hitscan", meta = (DisplayName = "On Hitscan Miss"))
-	void BP_OnHitscanMiss(const FVector& TraceEnd);
+	void BP_OnHitscanMiss(const FVector& TraceStart, const FVector& TraceEnd);
 };

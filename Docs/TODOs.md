@@ -1,6 +1,6 @@
-# Blueprint TODOs
+# TODOs
 
-Tracks Blueprint assets and editor-side work required by C++ changes. Sorted by feature.
+Tracks Blueprint assets, editor setup, and editor-side work required by C++ changes.
 
 *Last updated: 2026-04-18 — added Gunslinger Ultimate (Focus) and Grenade (Frag) scaffolding*
 
@@ -44,6 +44,27 @@ Tracks Blueprint assets and editor-side work required by C++ changes. Sorted by 
   - Set **Ultimate Action** = `IA_Ultimate`, **Grenade Action** = `IA_Grenade`.
   - Set **Ultimate Ability Class** = `BP_UltimateAbility_GunslingerFocus`.
   - Set **Grenade Ability Class** = `BP_GrenadeAbility_GunslingerFrag`.
+
+---
+
+## Editor Setup
+
+### Project defaults
+
+- [x] **Edit → Project Settings → Maps & Modes** — Default GameMode set to `GM_Hub`, default map and editor startup map set to `LVL_Hub`.
+
+### Game modes per map
+
+- [x] **Hub map (`LVL_Hub`)** — Created with `GM_Hub` (BP child of `AEC_HubGameMode`). Verify *World Settings → GameMode Override* is set to `GM_Hub` in the editor.
+- [ ] **Run / gameplay map(s)** — Set *World Settings → GameMode Override* to `GM_FireGun` (BP child of `AEC_FireGunGameMode`) on `LVL_StartZone01` and any future run maps.
+
+### Blueprint game modes
+
+- [ ] If a Blueprint game mode (e.g. `BP_FirstPersonGameMode`) does **not** inherit from `AEC_FireGunGameModeBase` or a derived C++ class, open that BP and set **Classes → Player State Class** to **`AEC_PlayerState`** so GAS on PlayerState works.
+
+### Optional verification
+
+- [ ] Listen server + 2 clients (PIE): confirm health/UI and respawn after assigning the correct `PlayerStateClass` and modes.
 
 ---
 

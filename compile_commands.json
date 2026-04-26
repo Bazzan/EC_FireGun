@@ -1,0 +1,254 @@
+[
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/Module.EC_FireGun.gen.1.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/Module.EC_FireGun.gen.1.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/Module.EC_FireGun.gen.1.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/Module.EC_FireGun.gen.2.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/Module.EC_FireGun.gen.2.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/Module.EC_FireGun.gen.2.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/PerModuleInline.gen.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/PerModuleInline.gen.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/PerModuleInline.gen.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Abilities/Grenade/ECGrenadeAbility.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ECGrenadeAbility.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ECGrenadeAbility.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Abilities/ShootAbilityBase.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShootAbilityBase.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShootAbilityBase.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Abilities/ShootHitscanAbility.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShootHitscanAbility.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShootHitscanAbility.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Abilities/ShootProjectileAbility.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShootProjectileAbility.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShootProjectileAbility.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Abilities/Ultimate/GunslingerFocusAbility.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/GunslingerFocusAbility.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/GunslingerFocusAbility.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Abilities/Ultimate/UltimateAbilityBase.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/UltimateAbilityBase.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/UltimateAbilityBase.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/EC_AttributeSet.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_AttributeSet.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_AttributeSet.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/EC_GameplayAbility.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_GameplayAbility.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_GameplayAbility.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Grenade/ECGrenade.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ECGrenade.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ECGrenade.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/AbilitySystem/Projectile/ECProjectile.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ECProjectile.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ECProjectile.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Characters/EC_Character.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_Character.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_Character.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Characters/EC_MinionCharacter.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_MinionCharacter.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_MinionCharacter.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Characters/EC_PlayerCharacter.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_PlayerCharacter.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_PlayerCharacter.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/EC_FireGun.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGun.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGun.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/EC_FireGunCameraManager.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunCameraManager.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunCameraManager.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/EC_FireGunPlayerController.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunPlayerController.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunPlayerController.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/EC_GameplayTags.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_GameplayTags.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_GameplayTags.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/GameMode/EC_FireGunGameMode.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunGameMode.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunGameMode.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/GameMode/EC_FireGunGameModeBase.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunGameModeBase.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_FireGunGameModeBase.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/GameMode/EC_GameSession.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_GameSession.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_GameSession.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/GameMode/EC_HubGameMode.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_HubGameMode.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_HubGameMode.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/GameMode/HorrorGameMode.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorGameMode.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorGameMode.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/GameMode/ShooterGameMode.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterGameMode.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterGameMode.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Player/EC_PlayerState.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_PlayerState.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EC_PlayerState.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Horror/HorrorCharacter.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorCharacter.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorCharacter.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Horror/HorrorPlayerController.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorPlayerController.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorPlayerController.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Horror/UI/HorrorUI.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorUI.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/HorrorUI.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/AI/EnvQueryContext_Target.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EnvQueryContext_Target.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/EnvQueryContext_Target.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/AI/ShooterAIController.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterAIController.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterAIController.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/AI/ShooterNPC.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterNPC.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterNPC.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/AI/ShooterNPCSpawner.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterNPCSpawner.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterNPCSpawner.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/AI/ShooterStateTreeUtility.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterStateTreeUtility.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterStateTreeUtility.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/ShooterPlayerController.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterPlayerController.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterPlayerController.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/UI/ShooterBulletCounterUI.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterBulletCounterUI.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterBulletCounterUI.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/UI/ShooterUI.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterUI.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterUI.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/Weapons/ShooterPickup.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterPickup.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterPickup.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/Weapons/ShooterProjectile.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterProjectile.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterProjectile.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/Weapons/ShooterWeapon.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterWeapon.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterWeapon.cpp.obj"
+	},
+	{
+		"file": "F:/GithubWorkspace/EC_FireGun/Source/EC_FireGun/Variant_Shooter/Weapons/ShooterWeaponHolder.cpp",
+		"command": "F:/VisualStudio/VC/Tools/Llvm/x64/bin/clang-cl.exe @\"F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterWeaponHolder.cpp.obj.rsp\" ",
+		"directory": "F:/UnrealEngine/UE_5.7/Engine/Source",
+		"output": "F:/GithubWorkspace/EC_FireGun/Intermediate/Build/Win64/x64/UnrealEditor/Development/EC_FireGun/ShooterWeaponHolder.cpp.obj"
+	}
+]

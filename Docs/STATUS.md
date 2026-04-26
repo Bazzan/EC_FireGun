@@ -14,6 +14,7 @@
 ## Recently Completed
 <!-- Features/tasks finished in the last few sessions -->
 
+- [2026-04-18] Added `AEC_GameSession` (new `LogECSession` category, `MaxPlayers=3` per Design.md §4, `ApproveLogin` override logs rejections) and wired `GameSessionClass` on `AEC_FireGunGameModeBase` so Hub and Run modes inherit the cap.
 - [2026-04-18] Added Gunslinger Ultimate (Focus) and Frag Grenade scaffolding: new tags, `OutgoingDamageMultiplier` attribute (auto-applied in shoot/projectile/grenade pipelines), `UUltimateAbilityBase` + `UGunslingerFocusAbility`, `UECGrenadeAbility` + `AECGrenade` (impact-detonating, sphere-overlap GE damage with falloff), and `UltimateAbilityClass`/`GrenadeAbilityClass` + `UltimateAction`/`GrenadeAction` slots on `AEC_PlayerCharacter` granted on possession.
 - [2026-04-18] Added Design.md §5.2 line for per-class **Grenade** slot (short cooldown, server-authoritative).
 - [2026-04-18] Renamed C++ shoot abilities to drop `GA_` prefix (reserved for BPs): `UGA_ShootBase`/`Hitscan`/`Projectile` -> `UShootAbilityBase`/`UShootHitscanAbility`/`UShootProjectileAbility`; added `ActiveClassRedirects` so existing BP children keep working.
@@ -23,9 +24,6 @@
 - [2026-04-11] Fixed GAS damage sign: `SetByCaller` magnitude is now negated in `GA_ShootBase` and `AECProjectile` so damage subtracts Health.
 - [2026-04-11] Added pawn-owned ASC + `UEC_AttributeSet` to `AShooterNPC` so GAS shoot abilities can damage NPCs.
 - [2026-04-11] Integrated GAS abilities into `AShooterWeapon`: weapon grants/revokes shoot ability on equip/unequip.
-- [2026-04-11] Created GAS shooting abilities: `UGA_ShootBase`, `UGA_ShootHitscan`, `UGA_ShootProjectile`, `AECProjectile`.
-- [2026-04-11] Added native gameplay tags, `UEC_GameplayAbility` base class, `LogWeapon` category.
-- [2026-04-11] Added "GAS damage & effects rule" to Design.md and agent rules.
 
 ## Known Issues and Bugs
 <!-- Active bugs, broken behavior, or regressions -->

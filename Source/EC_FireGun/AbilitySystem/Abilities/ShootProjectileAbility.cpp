@@ -8,7 +8,7 @@
 
 UShootProjectileAbility::UShootProjectileAbility()
 {
-	AbilityTags.AddTag(EC_GameplayTags::Ability_Shoot_Projectile);
+	SetAssetTags(FGameplayTagContainer(EC_GameplayTags::Ability_Shoot_Projectile));
 }
 
 void UShootProjectileAbility::ActivateAbility(

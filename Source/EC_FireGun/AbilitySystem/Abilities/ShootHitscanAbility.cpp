@@ -6,7 +6,7 @@
 
 UShootHitscanAbility::UShootHitscanAbility()
 {
-	AbilityTags.AddTag(EC_GameplayTags::Ability_Shoot_Hitscan);
+	SetAssetTags(FGameplayTagContainer(EC_GameplayTags::Ability_Shoot_Hitscan));
 }
 
 void UShootHitscanAbility::ActivateAbility(
@@ -53,7 +53,7 @@ void UShootHitscanAbility::ActivateAbility(
 	}
 	else
 	{
-		BP_OnHitscanMiss(Aim.End);
+		BP_OnHitscanMiss(Aim.Start, Aim.End);
 	}
 
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
