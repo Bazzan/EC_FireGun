@@ -2,6 +2,7 @@
 
 
 #include "Variant_Shooter/AI/ShooterNPC.h"
+#include "AbilitySystem/EC_AbilitySet.h"
 #include "AbilitySystem/EC_AttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "EC_GameplayTags.h"
@@ -21,7 +22,7 @@ AShooterNPC::AShooterNPC()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	ECAttributeSet = CreateDefaultSubobject<UEC_AttributeSet>(TEXT("ECAttributeSet"));
 	AbilitySystemComponent->AddSpawnedAttribute(ECAttributeSet);
@@ -52,6 +53,19 @@ void AShooterNPC::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 			UEC_AttributeSet::GetHealthAttribute()).RemoveAll(this);
+	}
+
+	// Cleanup granted abilities
+	if (HasAuthority() && AbilitySystemComponent)
+	{
+		for (const FGameplayAbilitySpecHandle& Handle : GrantedAbilityHandles)
+		{
+			if (Handle.IsValid())
+			{
+				AbilitySystemComponent->ClearAbility(Handle);
+			}
+		}
+		GrantedAbilityHandles.Reset();
 	}
 
 	Super::EndPlay(EndPlayReason);
@@ -230,6 +244,13 @@ void AShooterNPC::InitializeAbilitySystem()
 	}
 
 	CurrentHP = AbilitySystemComponent->GetNumericAttribute(UEC_AttributeSet::GetHealthAttribute());
+
+	// Grant default abilities and passive effects on authority
+	if (HasAuthority() && DefaultAbilitySet)
+	{
+		TArray<FActiveGameplayEffectHandle> DummyPassiveHandles;
+		DefaultAbilitySet->GrantToASC(AbilitySystemComponent, this, GrantedAbilityHandles, DummyPassiveHandles);
+	}
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		UEC_AttributeSet::GetHealthAttribute())

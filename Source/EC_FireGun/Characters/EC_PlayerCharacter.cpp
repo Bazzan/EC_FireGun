@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Characters/EC_PlayerCharacter.h"
+#include "EC_FireGun.h"
+#include "AbilitySystem/EC_AbilitySet.h"
+#include "AbilitySystem/EC_InputBindingSet.h"
 #include "AbilitySystem/EC_AttributeSet.h"
 #include "AbilitySystem/EC_GameplayAbility.h"
 #include "AbilitySystemComponent.h"
@@ -37,6 +40,15 @@ UAbilitySystemComponent* AEC_PlayerCharacter::GetAbilitySystemComponent() const
 void AEC_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!DefaultAbilitySet)
+	{
+		UE_LOG(LogEC_FireGun, Warning, TEXT("%s: DefaultAbilitySet is not set — no shared abilities or passives will be granted"), *GetName());
+	}
+	if (!InputBindingSet)
+	{
+		UE_LOG(LogEC_FireGun, Warning, TEXT("%s: InputBindingSet is not set — ability input bindings will be unavailable"), *GetName());
+	}
 
 	InitAbilityActorInfoIfNeeded();
 	RegisterHealthAttributeDelegate();
@@ -166,43 +178,50 @@ void AEC_PlayerCharacter::GrantClassAbilitiesIfNeeded()
 		return;
 	}
 
-	auto GrantOne = [this, ASC](TSubclassOf<UEC_GameplayAbility> AbilityClass)
+	// 1. Grant shared default abilities and passive effects from the data asset
+	if (DefaultAbilitySet)
 	{
-		if (!AbilityClass)
-		{
-			return;
-		}
-		FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
-		const FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
-		if (Handle.IsValid())
-		{
-			GrantedClassAbilityHandles.Add(Handle);
-		}
-	};
-
-	GrantOne(UltimateAbilityClass);
-	GrantOne(GrenadeAbilityClass);
+		DefaultAbilitySet->GrantToASC(ASC, this, GrantedClassAbilityHandles, GrantedPassiveEffectHandles);
+	}
 
 	bClassAbilitiesGranted = true;
 }
 
 void AEC_PlayerCharacter::ClearGrantedClassAbilities()
 {
-	if (!HasAuthority() || GrantedClassAbilityHandles.Num() == 0)
+	if (!HasAuthority())
 	{
 		GrantedClassAbilityHandles.Reset();
+		GrantedPassiveEffectHandles.Reset();
 		bClassAbilitiesGranted = false;
 		return;
 	}
 
-	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC)
 	{
-		for (const FGameplayAbilitySpecHandle& Handle : GrantedClassAbilityHandles)
+		GrantedClassAbilityHandles.Reset();
+		GrantedPassiveEffectHandles.Reset();
+		bClassAbilitiesGranted = false;
+		return;
+	}
+
+	// Remove passive effects
+	for (const FActiveGameplayEffectHandle& Handle : GrantedPassiveEffectHandles)
+	{
+		if (Handle.IsValid())
 		{
-			if (Handle.IsValid())
-			{
-				ASC->ClearAbility(Handle);
-			}
+			ASC->RemoveActiveGameplayEffect(Handle);
+		}
+	}
+	GrantedPassiveEffectHandles.Reset();
+
+	// Clear granted abilities
+	for (const FGameplayAbilitySpecHandle& Handle : GrantedClassAbilityHandles)
+	{
+		if (Handle.IsValid())
+		{
+			ASC->ClearAbility(Handle);
 		}
 	}
 
@@ -225,14 +244,18 @@ void AEC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		// Switch weapon
 		EnhancedInputComponent->BindAction(SwitchWeaponAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::DoSwitchWeapon);
 
-		// Ultimate / Grenade (skipped if action is not assigned in BP)
-		if (UltimateAction)
+		// Tag-based ability bindings from the input binding set (Ultimate, Grenade, Dash, Interact, etc.)
+		if (InputBindingSet)
 		{
-			EnhancedInputComponent->BindAction(UltimateAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::DoActivateUltimate);
-		}
-		if (GrenadeAction)
-		{
-			EnhancedInputComponent->BindAction(GrenadeAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::DoActivateGrenade);
+			AbilityInputActions.Reset();
+			for (const FECTagInputBinding& Binding : InputBindingSet->InputBindings)
+			{
+				if (Binding.InputAction && Binding.AbilityTag.IsValid())
+				{
+					AbilityInputActions.Add(Binding.InputAction, Binding.AbilityTag);
+					EnhancedInputComponent->BindAction(Binding.InputAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::OnAbilityInputTriggered);
+				}
+			}
 		}
 	}
 }
@@ -340,29 +363,15 @@ void AEC_PlayerCharacter::DoSwitchWeapon()
 	}
 }
 
-void AEC_PlayerCharacter::DoActivateUltimate()
+void AEC_PlayerCharacter::OnAbilityInputTriggered(const FInputActionInstance& Instance)
 {
-	if (IsDead() || !UltimateAbilityClass)
+	const FGameplayTag* Tag = AbilityInputActions.Find(Instance.GetSourceAction());
+	if (Tag && Tag->IsValid() && !IsDead())
 	{
-		return;
-	}
-
-	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
-	{
-		ASC->TryActivateAbilityByClass(UltimateAbilityClass);
-	}
-}
-
-void AEC_PlayerCharacter::DoActivateGrenade()
-{
-	if (IsDead() || !GrenadeAbilityClass)
-	{
-		return;
-	}
-
-	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
-	{
-		ASC->TryActivateAbilityByClass(GrenadeAbilityClass);
+		if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+		{
+			ASC->TryActivateAbilitiesByTag(FGameplayTagContainer(*Tag));
+		}
 	}
 }
 

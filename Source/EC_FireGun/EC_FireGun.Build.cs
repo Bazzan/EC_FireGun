@@ -23,7 +23,6 @@ public class EC_FireGun : ModuleRules
 			"GameplayAbilities",
 			"GameplayTags",
 			"GameplayTasks",
-			"StructUtils",
 			"ModularGameplay",
 			"AbilitySystemGameFeatureActions",
 		});

@@ -5,16 +5,18 @@
 ## Current Focus
 <!-- What is actively being worked on right now -->
 
-- [2026-04-26] Gunslinger Ultimate + Grenade Blueprint setup: build `GE_FocusMode`, `GE_Cooldown_Ultimate`, `GE_Cooldown_Grenade`, `BP_UltimateAbility_GunslingerFocus`, `BP_FragGrenade`, `BP_GrenadeAbility_GunslingerFrag`, `IA_Ultimate` (X) and `IA_Grenade` (G), and assign on player BP (see `Docs/TODOs.md`).
-- [2026-04-12] Hub map & editor wiring: assign `GM_Hub` override on LVL_Hub World Settings, assign `GM_FireGun` on run/gameplay maps.
-- [2026-04-12] Verify any non-EC BP game modes have `PlayerStateClass` set to `AEC_PlayerState` for GAS support.
-- [2026-04-12] Listen-server PIE test (host + 2 clients): confirm health/UI, player state, and game mode per map.
-- [2026-04-12] GAS shooting Blueprint setup: create `GE_Damage`, `BP_Projectile`, `BP_ShootHitscan`, `BP_ShootProjectile`, assign `ShootAbilityClass` on weapon BPs (see `Docs/Blueprint_TODOs.md`).
+- [2026-05-09] Blueprint setup: create `AS_DefaultAbilities`, `IS_PlayerAbilities`, per-class passive GEs, ability BPs with correct tags, and assign on character BPs (see `Docs/Blueprint_TODOs.md`).
 
 ## Recently Completed
 <!-- Features/tasks finished in the last few sessions -->
 
-- [2026-05-09] Added `UEC_GameplayEffect` (project-wide `UGameplayEffect` base class with `PostInitProperties` override); created `Docs/Blueprint_TODOs.md` with reparenting checklist.
+- [2026-05-09] Added `UEC_InputBindingSet` data asset (`AbilitySystem/EC_InputBindingSet.h/.cpp`) with `FECTagInputBinding` struct mapping `FGameplayTag → UInputAction*`. Replaced hard-wired `UltimateAction`/`GrenadeAction` properties on `AEC_PlayerCharacter` with unified tag-based input binding via `InputBindingSet` + `TryActivateAbilitiesByTag`. Removed `DoActivateUltimate()`/`DoActivateGrenade()`.
+- [2026-05-09] Removed `InputTag` from `FECAbilityGrant` — ability activation uses ability's own `AbilityTags` (set via `SetAssetTags`) instead.
+- [2026-05-09] Added `UEC_GameplayAbilitySet` data asset (`AbilitySystem/EC_AbilitySet.h/.cpp`) for data-driven ability + passive granting. `GrantToASC()` grants abilities and applies passives in one call, tracking both handle types.
+- [2026-05-09] Extended `AEC_PlayerCharacter`: new `DefaultAbilitySet` (shared abilities + passive GEs) granted on possession, cleaned up on EndPlay.
+- [2026-05-09] Extended `AShooterNPC`: new `DefaultAbilitySet` granted in `InitializeAbilitySystem()`, cleared on EndPlay.
+- [2026-05-09] GAS-fied `AEC_MinionCharacter`: added pawn-level ASC + `UEC_AttributeSet`, `IAbilitySystemInterface`, `DefaultAbilitySet` support, health delegate, damage bridge, death flow with `State.Dead` tag, and `BP_OnDeath` hook.
+- [2026-05-09] Changed `AbilitySystemComponent` replication mode from `Minimal` to `Mixed` on `AShooterNPC` and `AEC_PlayerState` so non-owning clients see gameplay effect tags for UI/feedback purposes.
 - [2026-04-18] Added `AEC_GameSession` (new `LogECSession` category, `MaxPlayers=3` per Design.md §4, `ApproveLogin` override logs rejections) and wired `GameSessionClass` on `AEC_FireGunGameModeBase` so Hub and Run modes inherit the cap.
 - [2026-04-18] Added Gunslinger Ultimate (Focus) and Frag Grenade scaffolding: new tags, `OutgoingDamageMultiplier` attribute (auto-applied in shoot/projectile/grenade pipelines), `UUltimateAbilityBase` + `UGunslingerFocusAbility`, `UECGrenadeAbility` + `AECGrenade` (impact-detonating, sphere-overlap GE damage with falloff), and `UltimateAbilityClass`/`GrenadeAbilityClass` + `UltimateAction`/`GrenadeAction` slots on `AEC_PlayerCharacter` granted on possession.
 - [2026-04-18] Added Design.md §5.2 line for per-class **Grenade** slot (short cooldown, server-authoritative).
@@ -35,7 +37,7 @@
 <!-- Things that might break, tech debt, or areas needing attention -->
 
 - [2026-04-11] Legacy `AShooterProjectile` still uses `UGameplayStatics::ApplyDamage`. Weapons opted into GAS bypass this, but NPC-owned weapons and old BPs still use the legacy path. `AShooterNPC::TakeDamage` now bridges this into the ASC.
-- [2026-04-11] `AEC_MinionCharacter` has no ASC; GAS damage will not affect it until one is added.
+<!-- resolved: AEC_MinionCharacter now has ASC + AttributeSet -->
 
 ## Notes
 <!-- Anything else relevant to the next session -->

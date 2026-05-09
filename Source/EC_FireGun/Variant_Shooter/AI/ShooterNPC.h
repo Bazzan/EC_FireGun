@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/EC_Character.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "ShooterWeaponHolder.h"
 #include "ShooterNPC.generated.h"
 
@@ -13,6 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPawnDeathDelegate);
 class AShooterWeapon;
 class UAbilitySystemComponent;
 class UEC_AttributeSet;
+class UEC_GameplayAbilitySet;
 struct FOnAttributeChangeData;
 
 /**
@@ -108,6 +110,12 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UEC_AttributeSet> ECAttributeSet;
+
+	/** Default abilities granted to this NPC (e.g. enrage, death explosion) */
+	UPROPERTY(EditAnywhere, Category = "GAS")
+	TObjectPtr<UEC_GameplayAbilitySet> DefaultAbilitySet;
+
+	TArray<FGameplayAbilitySpecHandle> GrantedAbilityHandles;
 
 public:
 

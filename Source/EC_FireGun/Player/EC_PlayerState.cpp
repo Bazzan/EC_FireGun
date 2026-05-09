@@ -10,7 +10,7 @@ AEC_PlayerState::AEC_PlayerState()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	ECAttributeSet = CreateDefaultSubobject<UEC_AttributeSet>(TEXT("ECAttributeSet"));
 	AbilitySystemComponent->AddSpawnedAttribute(ECAttributeSet);

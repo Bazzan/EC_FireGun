@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "ShooterWeaponHolder.h"
+#include "GameplayEffectTypes.h"
 #include "EC_PlayerCharacter.generated.h"
 
 class AShooterWeapon;
@@ -14,8 +15,11 @@ class UInputAction;
 class UInputComponent;
 class UPawnNoiseEmitterComponent;
 class UAbilitySystemComponent;
-class UEC_GameplayAbility;
-struct FOnAttributeChangeData;
+class UEC_GameplayAbilitySet;
+class UEC_InputBindingSet;
+class UGameplayEffect;
+	struct FOnAttributeChangeData;
+	struct FInputActionInstance;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBulletCountUpdatedDelegate, int32, MagazineSize, int32, Bullets);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamagedDelegate, float, LifePercent);
@@ -44,21 +48,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* SwitchWeaponAction;
 
-	/** Activate Ultimate input action (default key: X) */
+	/** Data asset mapping ability tags to input actions (Ultimate, Grenade, Dash, Interact, etc.) */
 	UPROPERTY(EditAnywhere, Category ="Input")
-	UInputAction* UltimateAction;
+	TObjectPtr<UEC_InputBindingSet> InputBindingSet;
 
-	/** Throw Grenade input action (default key: G) */
-	UPROPERTY(EditAnywhere, Category ="Input")
-	UInputAction* GrenadeAction;
-
-	/** Class Ultimate ability granted on possession (e.g. BP_UltimateAbility_GunslingerFocus) */
-	UPROPERTY(EditAnywhere, Category ="Ability")
-	TSubclassOf<UEC_GameplayAbility> UltimateAbilityClass;
-
-	/** Class Grenade ability granted on possession (e.g. BP_GrenadeAbility_GunslingerFrag) */
-	UPROPERTY(EditAnywhere, Category ="Ability")
-	TSubclassOf<UEC_GameplayAbility> GrenadeAbilityClass;
+	/** Shared default abilities and passive effects granted to every character (Dash, Interact, class passive, etc.) */
+	UPROPERTY(EditAnywhere, Category = "Ability")
+	TObjectPtr<UEC_GameplayAbilitySet> DefaultAbilitySet;
 
 	/** Name of the first person mesh weapon socket */
 	UPROPERTY(EditAnywhere, Category ="Weapons")
@@ -155,14 +151,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoSwitchWeapon();
 
-	/** Tries to activate the granted Ultimate ability via the ASC. */
-	UFUNCTION(BlueprintCallable, Category="Input")
-	void DoActivateUltimate();
-
-	/** Tries to activate the granted Grenade ability via the ASC. */
-	UFUNCTION(BlueprintCallable, Category="Input")
-	void DoActivateGrenade();
-
 public:
 
 	//~Begin IShooterWeaponHolder interface
@@ -192,9 +180,12 @@ protected:
 	void OnHealthAttributeChanged(const struct FOnAttributeChangeData& Data);
 	void GrantClassAbilitiesIfNeeded();
 	void ClearGrantedClassAbilities();
+	void OnAbilityInputTriggered(const FInputActionInstance& Instance);
 
 	bool bClassAbilitiesGranted = false;
+	TMap<TObjectPtr<const UInputAction>, FGameplayTag> AbilityInputActions;
 	TArray<FGameplayAbilitySpecHandle> GrantedClassAbilityHandles;
+	TArray<FActiveGameplayEffectHandle> GrantedPassiveEffectHandles;
 
 public:
 	bool IsDead() const;
