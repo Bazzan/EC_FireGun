@@ -10,9 +10,9 @@ Tracks Blueprint assets, editor setup, and editor-side work required by C++ chan
 
 - [x] **Create `GE_Damage` GameplayEffect asset** — Instant effect, one modifier: `Health` attribute, `Additive` operation, magnitude from SetByCaller keyed by tag `Data.Damage`. Place under e.g. `Content/AbilitySystem/Effects/`.
 - [x] **Create `BP_Projectile` (child of `AECProjectile`)** — Add a mesh or Niagara trail for visuals. Assign to `ProjectileClass` on the shoot-projectile ability.
-- [ ] **Create `BP_ShootHitscan` (child of `UShootHitscanAbility`)** — Set `DamageEffect` to `GE_Damage`, configure `BaseDamage`, `MaxRange`, and `TraceChannel`. Optionally implement `On Hitscan Hit` / `On Hitscan Miss` events for tracer and impact VFX.
+- [x] **Create `BP_ShootHitscan` (child of `UShootHitscanAbility`)** — Set `DamageEffect` to `GE_Damage`, configure `BaseDamage`, `MaxRange`, and `TraceChannel`. Optionally implement `On Hitscan Hit` / `On Hitscan Miss` events for tracer and impact VFX.
 - [x] **Create `BP_ShootProjectile` (child of `UShootProjectileAbility`)** — Set `DamageEffect` to `GE_Damage`, configure `BaseDamage`, `MaxRange`, `ProjectileClass` to `BP_Projectile`, and `SpawnOffset`.
-- [ ] **Assign `ShootAbilityClass` on weapon BPs** — Open each weapon Blueprint child of `AShooterWeapon` and set the new `Shoot Ability Class` property (under the Ability category) to the matching `BP_ShootHitscan` or `BP_ShootProjectile`. The weapon now automatically grants/revokes the ability when equipped/unequipped. Weapons without this property set continue using the legacy projectile path.
+- [x] **Assign `ShootAbilityClass` on weapon BPs** — Open each weapon Blueprint child of `AShooterWeapon` and set the new `Shoot Ability Class` property (under the Ability category) to the matching `BP_ShootHitscan` or `BP_ShootProjectile`. The weapon now automatically grants/revokes the ability when equipped/unequipped. Weapons without this property set continue using the legacy projectile path.
 
 ---
 
