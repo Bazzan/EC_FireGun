@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "Engine/OverlapResult.h"
 #include "TimerManager.h"
+#include "DrawDebugHelpers.h"
 
 AECGrenade::AECGrenade()
 {
@@ -106,6 +107,13 @@ void AECGrenade::Explode()
 	const FVector ExplosionLocation = GetActorLocation();
 
 	UWorld* World = GetWorld();
+#if ENABLE_DRAW_DEBUG
+	if (World)
+	{
+		DrawDebugSphere(World, ExplosionLocation, ExplosionRadius, 24, FColor::Orange, false, 5.0f);
+	}
+#endif
+
 	if (World)
 	{
 		TArray<FOverlapResult> Overlaps;

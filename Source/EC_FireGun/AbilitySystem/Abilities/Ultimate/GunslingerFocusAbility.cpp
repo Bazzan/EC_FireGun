@@ -56,7 +56,7 @@ void UGunslingerFocusAbility::ActivateAbility(
 		}
 	}
 
-	BP_OnFocusStart(Duration);
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	if (UWorld* World = GetWorld())
 	{
@@ -94,8 +94,6 @@ void UGunslingerFocusAbility::EndAbility(
 		}
 	}
 	ActiveBuffHandle = FActiveGameplayEffectHandle();
-
-	BP_OnFocusEnd();
 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

@@ -42,14 +42,6 @@ protected:
 		bool bReplicateEndAbility,
 		bool bWasCancelled) override;
 
-	/** Called on the avatar when Focus starts (cosmetic hook for HUD/sound/cue). */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Focus", meta = (DisplayName = "On Focus Start"))
-	void BP_OnFocusStart(float Duration);
-
-	/** Called on the avatar when Focus ends (cosmetic hook). */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Focus", meta = (DisplayName = "On Focus End"))
-	void BP_OnFocusEnd();
-
 private:
 	FActiveGameplayEffectHandle ActiveBuffHandle;
 	FTimerHandle EndTimerHandle;

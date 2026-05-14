@@ -178,10 +178,16 @@ void AEC_PlayerCharacter::GrantClassAbilitiesIfNeeded()
 		return;
 	}
 
-	// 1. Grant shared default abilities and passive effects from the data asset
+	// Grant shared default abilities and passive effects (Dash, Interact, etc.)
 	if (DefaultAbilitySet)
 	{
 		DefaultAbilitySet->GrantToASC(ASC, this, GrantedClassAbilityHandles, GrantedPassiveEffectHandles);
+	}
+
+	// Grant class-specific abilities and passives (Ultimate, Grenade, class passive)
+	if (ClassAbilitySet)
+	{
+		ClassAbilitySet->GrantToASC(ASC, this, GrantedClassAbilityHandles, GrantedPassiveEffectHandles);
 	}
 
 	bClassAbilitiesGranted = true;
@@ -253,7 +259,7 @@ void AEC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 				if (Binding.InputAction && Binding.AbilityTag.IsValid())
 				{
 					AbilityInputActions.Add(Binding.InputAction, Binding.AbilityTag);
-					EnhancedInputComponent->BindAction(Binding.InputAction, ETriggerEvent::Triggered, this, &AEC_PlayerCharacter::OnAbilityInputTriggered);
+					EnhancedInputComponent->BindAction(Binding.InputAction, ETriggerEvent::Started, this, &AEC_PlayerCharacter::OnAbilityInputTriggered);
 				}
 			}
 		}
@@ -368,10 +374,16 @@ void AEC_PlayerCharacter::OnAbilityInputTriggered(const FInputActionInstance& In
 	const FGameplayTag* Tag = AbilityInputActions.Find(Instance.GetSourceAction());
 	if (Tag && Tag->IsValid() && !IsDead())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("OnAbilityInputTriggered: tag=%s"), *Tag->ToString());
 		if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
 		{
-			ASC->TryActivateAbilitiesByTag(FGameplayTagContainer(*Tag));
+			const bool bActivated = ASC->TryActivateAbilitiesByTag(FGameplayTagContainer(*Tag));
+			UE_LOG(LogTemp, Warning, TEXT("TryActivateAbilitiesByTag returned %d"), bActivated);
 		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("OnAbilityInputTriggered: %s"), Tag ? TEXT("dead") : TEXT("no tag"));
 	}
 }
 

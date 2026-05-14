@@ -1,15 +1,21 @@
 # Project Status
 
-*Last updated: 2026-05-09*
+*Last updated: 2026-05-14*
 
 ## Current Focus
 <!-- What is actively being worked on right now -->
 
-- [2026-05-09] Blueprint setup: create `AS_DefaultAbilities`, `IS_PlayerAbilities`, per-class passive GEs, ability BPs with correct tags, and assign on character BPs (see `Docs/Blueprint_TODOs.md`).
+- [2026-05-14] Blueprint setup (remaining): create `AS_DefaultAbilities` (shared) + per-class ability sets with Ultimate/Grenade/passives, assign on character BPs (see `Docs/Blueprint_TODOs.md`).
 
 ## Recently Completed
 <!-- Features/tasks finished in the last few sessions -->
 
+- [2026-05-14] Added `ActivateAbility`/`EndAbility` overrides to `UEC_GameplayAbility` (call Super) so all derived abilities fire BP Event Graph by default.
+- [2026-05-14] Removed custom `BP_OnFocusStart`/`BP_OnFocusEnd` hooks from `UGunslingerFocusAbility` — now uses standard `Super::ActivateAbility` → `K2_ActivateAbility()` instead.
+- [2026-05-14] Added `ClassAbilitySet` property to `AEC_PlayerCharacter` for per-class abilities (Ultimate, Grenade, class passive).
+- [2026-05-14] Fixed tag-based ability input binding: changed `ETriggerEvent::Triggered` → `ETriggerEvent::Started` to prevent double-activation on press+release.
+- [2026-05-14] Created `DA_Input_PlayerCharacterAbilityBinds` with Ultimate/Grenade input bindings.
+- [2026-05-14] Reparented all GE Blueprints (`GE_Damage`, `GE_FocusMode`, `GE_Cooldown_*`, etc.) from `UGameplayEffect` → `UEC_GameplayEffect`.
 - [2026-05-09] Added `UEC_InputBindingSet` data asset (`AbilitySystem/EC_InputBindingSet.h/.cpp`) with `FECTagInputBinding` struct mapping `FGameplayTag → UInputAction*`. Replaced hard-wired `UltimateAction`/`GrenadeAction` properties on `AEC_PlayerCharacter` with unified tag-based input binding via `InputBindingSet` + `TryActivateAbilitiesByTag`. Removed `DoActivateUltimate()`/`DoActivateGrenade()`.
 - [2026-05-09] Removed `InputTag` from `FECAbilityGrant` — ability activation uses ability's own `AbilityTags` (set via `SetAssetTags`) instead.
 - [2026-05-09] Added `UEC_GameplayAbilitySet` data asset (`AbilitySystem/EC_AbilitySet.h/.cpp`) for data-driven ability + passive granting. `GrantToASC()` grants abilities and applies passives in one call, tracking both handle types.

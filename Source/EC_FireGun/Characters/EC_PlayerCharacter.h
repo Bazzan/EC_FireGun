@@ -52,9 +52,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	TObjectPtr<UEC_InputBindingSet> InputBindingSet;
 
-	/** Shared default abilities and passive effects granted to every character (Dash, Interact, class passive, etc.) */
+	/** Shared default abilities and passive effects granted to every character (Dash, Interact, etc.). */
 	UPROPERTY(EditAnywhere, Category = "Ability")
 	TObjectPtr<UEC_GameplayAbilitySet> DefaultAbilitySet;
+
+	/** Class-specific abilities and passive effects (Ultimate, Grenade, class passive). Set per-class on child BPs. */
+	UPROPERTY(EditAnywhere, Category = "Ability")
+	TObjectPtr<UEC_GameplayAbilitySet> ClassAbilitySet;
 
 	/** Name of the first person mesh weapon socket */
 	UPROPERTY(EditAnywhere, Category ="Weapons")
