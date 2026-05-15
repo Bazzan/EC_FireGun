@@ -8,7 +8,7 @@
 
 DEFINE_LOG_CATEGORY(LogWeapon);
 
-UShootAbilityBase::UShootAbilityBase()
+UEC_ShootAbilityBase::UEC_ShootAbilityBase()
 {
 	FGameplayTagContainer Tags;
 	Tags.AddTag(EC_GameplayTags::Ability_Shoot);
@@ -17,7 +17,7 @@ UShootAbilityBase::UShootAbilityBase()
 	ActivationBlockedTags.AddTag(EC_GameplayTags::State_Dead);
 }
 
-bool UShootAbilityBase::GetAimData(FAimData& OutAim) const
+bool UEC_ShootAbilityBase::GetAimData(FAimData& OutAim) const
 {
 	const AEC_PlayerCharacter* PC = GetEC_PlayerCharacter();
 	if (!PC)
@@ -37,7 +37,7 @@ bool UShootAbilityBase::GetAimData(FAimData& OutAim) const
 	return true;
 }
 
-bool UShootAbilityBase::ApplyDamageToTarget(UAbilitySystemComponent* TargetASC) const
+bool UEC_ShootAbilityBase::ApplyDamageToTarget(UAbilitySystemComponent* TargetASC) const
 {
 	if (!TargetASC || !DamageEffect)
 	{

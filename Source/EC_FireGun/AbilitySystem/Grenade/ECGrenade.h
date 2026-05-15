@@ -11,19 +11,19 @@ class UAbilitySystemComponent;
 class UGameplayEffect;
 
 /**
- * Replicated thrown grenade spawned by UECGrenadeAbility.
+ * Replicated thrown grenade spawned by UEC_GrenadeAbility.
  * Detonates on first impact (with a safety MaxLifetime fallback) and applies
  * a GAS GameplayEffect to every pawn-with-ASC inside ExplosionRadius.
  *
  * Listen-server: detonation, overlap detection, and effect application all run on the host.
  */
 UCLASS(Abstract)
-class EC_FIREGUN_API AECGrenade : public AActor
+class EC_FIREGUN_API AEC_Grenade : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	AECGrenade();
+	AEC_Grenade();
 
 	/**
 	 * Called by the spawning ability to pass damage context.

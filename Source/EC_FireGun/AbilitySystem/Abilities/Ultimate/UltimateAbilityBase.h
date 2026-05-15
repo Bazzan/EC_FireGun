@@ -11,10 +11,10 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClassAbility, Log, All);
  * Sets common asset/blocked tags so concrete ultimates only define their own behavior.
  */
 UCLASS(Abstract)
-class EC_FIREGUN_API UUltimateAbilityBase : public UEC_GameplayAbility
+class EC_FIREGUN_API UEC_UltimateAbilityBase : public UEC_GameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UUltimateAbilityBase();
+	UEC_UltimateAbilityBase();
 };

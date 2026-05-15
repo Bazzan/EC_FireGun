@@ -3,7 +3,7 @@
 
 DEFINE_LOG_CATEGORY(LogClassAbility);
 
-UUltimateAbilityBase::UUltimateAbilityBase()
+UEC_UltimateAbilityBase::UEC_UltimateAbilityBase()
 {
 	FGameplayTagContainer Tags;
 	Tags.AddTag(EC_GameplayTags::Ability_Ultimate);

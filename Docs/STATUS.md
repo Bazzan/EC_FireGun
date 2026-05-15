@@ -1,15 +1,19 @@
 # Project Status
 
-*Last updated: 2026-05-14*
+*Last updated: 2026-05-15*
 
 ## Current Focus
 <!-- What is actively being worked on right now -->
 
+- [2026-05-15] Change all player abilities from `ServerInitiated` to `LocalPredicted` net execution policy for responsive feel in co-op (listen-server model). Update both C++ classes and Blueprint defaults.
 - [2026-05-14] Blueprint setup (remaining): create `AS_DefaultAbilities` (shared) + per-class ability sets with Ultimate/Grenade/passives, assign on character BPs (see `Docs/Blueprint_TODOs.md`).
 
 ## Recently Completed
 <!-- Features/tasks finished in the last few sessions -->
 
+- [2026-05-15] Renamed all custom ability/actor classes to follow `EC_` prefix convention. Added `ActiveClassRedirects` in `DefaultEngine.ini` for Blueprint compatibility.
+- [2026-05-14] Added editor validation to `UEC_GameplayAbilitySet::IsDataValid` — warns when a native C++ ability class (e.g. `UDashAbility`) is assigned instead of a Blueprint child (e.g. `BP_DashAbility`), preventing BP event graph issues.
+- [2026-05-14] Added `UDashAbility` C++ class: `LocalPredicted` net policy, single velocity override from movement input direction (~3m dash), ground friction disabled for dash duration, blocked by `State.Dead`/`Cooldown.Dash` tags. Added `Ability.Dash` and `Cooldown.Dash` gameplay tags.
 - [2026-05-14] Added `ActivateAbility`/`EndAbility` overrides to `UEC_GameplayAbility` (call Super) so all derived abilities fire BP Event Graph by default.
 - [2026-05-14] Removed custom `BP_OnFocusStart`/`BP_OnFocusEnd` hooks from `UGunslingerFocusAbility` — now uses standard `Super::ActivateAbility` → `K2_ActivateAbility()` instead.
 - [2026-05-14] Added `ClassAbilitySet` property to `AEC_PlayerCharacter` for per-class abilities (Ultimate, Grenade, class passive).
@@ -48,6 +52,8 @@
 ## Notes
 <!-- Anything else relevant to the next session -->
 
+- **All player abilities should use `LocalPredicted` net execution policy** (not `ServerInitiated`) for responsive feel in co-op listen-server model. Currently only `UDashAbility` uses `LocalPredicted`; shoot abilities, ultimate, and grenade abilities still use `ServerInitiated`.
+- `UDashAbility` is the first ability using `LocalPredicted` net execution policy (all others are `ServerInitiated`). This is intentional for responsive dash feel — the client predicts the velocity override locally, server reconciles.
 - New log category `LogClassAbility` covers ultimates and grenade abilities (declared in `UltimateAbilityBase.h`).
 - Focus damage bonus flows through `UEC_AttributeSet::OutgoingDamageMultiplier` (default 1.0). Hitscan reads it at apply-time; projectile and grenade abilities pre-multiply at spawn (so the value is locked in at fire-time, not impact-time).
 - To test GAS shooting: create `GE_Damage` BP asset, create a BP child of `UGA_ShootHitscan` or `UGA_ShootProjectile`, then set `ShootAbilityClass` on the weapon BP. The weapon handles granting automatically.

@@ -13,12 +13,12 @@ class UGameplayEffect;
  * and grants the State.Focus tag for VFX/SFX hooks. Ends when the buff expires.
  */
 UCLASS()
-class EC_FIREGUN_API UGunslingerFocusAbility : public UUltimateAbilityBase
+class EC_FIREGUN_API UEC_GunslingerFocusAbility : public UEC_UltimateAbilityBase
 {
 	GENERATED_BODY()
 
 public:
-	UGunslingerFocusAbility();
+	UEC_GunslingerFocusAbility();
 
 protected:
 	/** Duration GameplayEffect applied to self for the focus window (e.g. GE_FocusMode). */

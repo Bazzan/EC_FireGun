@@ -4,7 +4,7 @@
 #include "AbilitySystem/EC_GameplayAbility.h"
 #include "ECGrenadeAbility.generated.h"
 
-class AECGrenade;
+class AEC_Grenade;
 class UGameplayEffect;
 
 /**
@@ -13,17 +13,17 @@ class UGameplayEffect;
  * Cooldown GameplayEffect set on each Blueprint subclass (e.g. BP_GrenadeAbility_GunslingerFrag).
  */
 UCLASS()
-class EC_FIREGUN_API UECGrenadeAbility : public UEC_GameplayAbility
+class EC_FIREGUN_API UEC_GrenadeAbility : public UEC_GameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UECGrenadeAbility();
+	UEC_GrenadeAbility();
 
 protected:
 	/** Grenade actor class to spawn. */
 	UPROPERTY(EditDefaultsOnly, Category = "Grenade")
-	TSubclassOf<AECGrenade> GrenadeClass;
+	TSubclassOf<AEC_Grenade> GrenadeClass;
 
 	/** GameplayEffect applied by the grenade on detonation. Should use SetByCaller for Data.Damage. */
 	UPROPERTY(EditDefaultsOnly, Category = "Grenade")

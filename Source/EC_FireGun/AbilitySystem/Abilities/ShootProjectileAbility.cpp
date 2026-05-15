@@ -6,12 +6,12 @@
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 
-UShootProjectileAbility::UShootProjectileAbility()
+UEC_ShootProjectileAbility::UEC_ShootProjectileAbility()
 {
 	SetAssetTags(FGameplayTagContainer(EC_GameplayTags::Ability_Shoot_Projectile));
 }
 
-void UShootProjectileAbility::ActivateAbility(
+void UEC_ShootProjectileAbility::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,
@@ -46,7 +46,7 @@ void UShootProjectileAbility::ActivateAbility(
 	SpawnParams.Owner = GetAvatarActorFromActorInfo();
 	SpawnParams.Instigator = Cast<APawn>(GetAvatarActorFromActorInfo());
 
-	AECProjectile* Projectile = GetWorld()->SpawnActor<AECProjectile>(
+	AEC_Projectile* Projectile = GetWorld()->SpawnActor<AEC_Projectile>(
 		ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
 
 	if (Projectile)

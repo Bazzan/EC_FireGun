@@ -7,7 +7,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 
-AECProjectile::AECProjectile()
+AEC_Projectile::AEC_Projectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
@@ -29,7 +29,7 @@ AECProjectile::AECProjectile()
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 }
 
-void AECProjectile::InitDamage(
+void AEC_Projectile::InitDamage(
 	TSubclassOf<UGameplayEffect> InDamageEffect,
 	float InDamage,
 	UAbilitySystemComponent* InSourceASC)
@@ -39,7 +39,7 @@ void AECProjectile::InitDamage(
 	SourceASC = InSourceASC;
 }
 
-void AECProjectile::BeginPlay()
+void AEC_Projectile::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -52,10 +52,10 @@ void AECProjectile::BeginPlay()
 		CollisionComponent->IgnoreActorWhenMoving(GetInstigator(), !bCanDamageInstigator);
 	}
 
-	CollisionComponent->OnComponentHit.AddDynamic(this, &AECProjectile::OnHit);
+	CollisionComponent->OnComponentHit.AddDynamic(this, &AEC_Projectile::OnHit);
 }
 
-void AECProjectile::OnHit(
+void AEC_Projectile::OnHit(
 	UPrimitiveComponent* HitComponent,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp,
@@ -87,7 +87,7 @@ void AECProjectile::OnHit(
 	if (DestroyDelay > 0.0f)
 	{
 		GetWorld()->GetTimerManager().SetTimer(
-			DestroyTimerHandle, this, &AECProjectile::OnDestroyTimer, DestroyDelay, false);
+			DestroyTimerHandle, this, &AEC_Projectile::OnDestroyTimer, DestroyDelay, false);
 	}
 	else
 	{
@@ -95,7 +95,7 @@ void AECProjectile::OnHit(
 	}
 }
 
-void AECProjectile::ApplyDamageToActor(AActor* Target)
+void AEC_Projectile::ApplyDamageToActor(AActor* Target)
 {
 	if (!Target || !DamageEffectClass || !SourceASC.IsValid())
 	{
@@ -130,7 +130,7 @@ void AECProjectile::ApplyDamageToActor(AActor* Target)
 	}
 }
 
-void AECProjectile::OnDestroyTimer()
+void AEC_Projectile::OnDestroyTimer()
 {
 	Destroy();
 }

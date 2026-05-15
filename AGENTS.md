@@ -48,6 +48,7 @@
 - All gameplay features must be implemented for listen-server authority first (host authoritative + client prediction/reconciliation only where needed), and must not assume dedicated-server-only behavior.
 - Null safety: check pointers before use; prefer `IsValid()` for UObject references when relevant.
 - Follow Unreal naming conventions (PascalCase types/functions, b-prefixed bool members, etc.).
+- **Class naming prefix:** All new project-specific classes (UObjects, AActors, UObjects, UGameplayAbilities, UGameplayEffects, etc.) must use the `EC_` prefix. Examples: `UEC_GameplayAbility`, `AEC_PlayerCharacter`, `UEC_AbilitySet`. Do NOT use inconsistent prefixes like `Shooter`, `GA_`, or `EC` (without underscore).
 - Keep headers lean: forward-declare where possible; include in `.cpp` when you can.
 - Don't block the game thread with heavy work; if needed, use async/tasks appropriately.
 - When editing gameplay code, consider replication (`Server/Client/NetMulticast`) and authority checks.

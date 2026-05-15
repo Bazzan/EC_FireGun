@@ -10,12 +10,12 @@
  * to the first valid target hit.
  */
 UCLASS()
-class EC_FIREGUN_API UShootHitscanAbility : public UShootAbilityBase
+class EC_FIREGUN_API UEC_ShootHitscanAbility : public UEC_ShootAbilityBase
 {
 	GENERATED_BODY()
 
 public:
-	UShootHitscanAbility();
+	UEC_ShootHitscanAbility();
 
 protected:
 	/** Collision channel used for the hitscan trace. */

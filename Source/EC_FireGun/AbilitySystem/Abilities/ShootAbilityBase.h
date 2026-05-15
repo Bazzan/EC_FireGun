@@ -15,12 +15,12 @@ class UGameplayEffect;
  * the actual hit-detection strategy.
  */
 UCLASS(Abstract)
-class EC_FIREGUN_API UShootAbilityBase : public UEC_GameplayAbility
+class EC_FIREGUN_API UEC_ShootAbilityBase : public UEC_GameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UShootAbilityBase();
+	UEC_ShootAbilityBase();
 
 protected:
 	/** GameplayEffect applied to targets on hit (should use SetByCaller for Data.Damage). */

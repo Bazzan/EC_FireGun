@@ -51,4 +51,8 @@ public:
 					UObject* SourceObject,
 					TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles,
 					TArray<FActiveGameplayEffectHandle>& OutPassiveHandles) const;
+
+#if WITH_EDITOR
+	virtual EDataValidationResult IsDataValid(TArray<FText>& ValidationErrors) override;
+#endif
 };

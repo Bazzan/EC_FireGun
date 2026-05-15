@@ -4,12 +4,12 @@
 #include "EC_GameplayTags.h"
 #include "Engine/World.h"
 
-UShootHitscanAbility::UShootHitscanAbility()
+UEC_ShootHitscanAbility::UEC_ShootHitscanAbility()
 {
 	SetAssetTags(FGameplayTagContainer(EC_GameplayTags::Ability_Shoot_Hitscan));
 }
 
-void UShootHitscanAbility::ActivateAbility(
+void UEC_ShootHitscanAbility::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,

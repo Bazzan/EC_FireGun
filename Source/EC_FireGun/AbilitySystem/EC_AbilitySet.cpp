@@ -4,6 +4,7 @@
 #include "GameplayAbilitySpec.h"
 #include "Abilities/GameplayAbility.h"
 #include "GameplayEffect.h"
+#include "Misc/DataValidation.h"
 
 void UEC_GameplayAbilitySet::PostInitProperties()
 {
@@ -76,3 +77,33 @@ void UEC_GameplayAbilitySet::GrantToASC(
 		}
 	}
 }
+
+#if WITH_EDITOR
+EDataValidationResult UEC_GameplayAbilitySet::IsDataValid(TArray<FText>& ValidationErrors)
+{
+	EDataValidationResult Result = EDataValidationResult::Valid;
+
+	for (int32 i = 0; i < Abilities.Num(); ++i)
+	{
+		const TSubclassOf<UGameplayAbility>& AbilityClass = Abilities[i].AbilityClass;
+		if (!AbilityClass)
+		{
+			ValidationErrors.Add(FText::Format(
+				NSLOCTEXT("EC_AbilitySet", "NullAbilityClass", "Abilities[{0}]: AbilityClass is null"),
+				FText::AsNumber(i)));
+			Result = EDataValidationResult::Invalid;
+			continue;
+		}
+
+		if (!AbilityClass->HasAnyClassFlags(CLASS_Abstract) && AbilityClass->IsNative())
+		{
+			ValidationErrors.Add(FText::Format(
+				NSLOCTEXT("EC_AbilitySet", "NativeAbilityClass", "Abilities[{0}]: \"{1}\" is a native C++ class. Use a Blueprint child instead (e.g. BP_{1}) so Blueprint events (ActivateAbility/EndAbility) can fire."),
+				FText::AsNumber(i), FText::FromString(AbilityClass->GetName())));
+			Result = EDataValidationResult::Invalid;
+		}
+	}
+
+	return Result;
+}
+#endif

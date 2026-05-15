@@ -5,14 +5,14 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 
-UGunslingerFocusAbility::UGunslingerFocusAbility()
+UEC_GunslingerFocusAbility::UEC_GunslingerFocusAbility()
 {
 	FGameplayTagContainer Tags = GetAssetTags();
 	Tags.AddTag(EC_GameplayTags::Ability_Ultimate_Gunslinger_Focus);
 	SetAssetTags(Tags);
 }
 
-void UGunslingerFocusAbility::ActivateAbility(
+void UEC_GunslingerFocusAbility::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,
@@ -61,11 +61,11 @@ void UGunslingerFocusAbility::ActivateAbility(
 	if (UWorld* World = GetWorld())
 	{
 		World->GetTimerManager().SetTimer(
-			EndTimerHandle, this, &UGunslingerFocusAbility::OnFocusTimerExpired, Duration, false);
+			EndTimerHandle, this, &UEC_GunslingerFocusAbility::OnFocusTimerExpired, Duration, false);
 	}
 }
 
-void UGunslingerFocusAbility::OnFocusTimerExpired()
+void UEC_GunslingerFocusAbility::OnFocusTimerExpired()
 {
 	if (const FGameplayAbilitySpecHandle SpecHandle = GetCurrentAbilitySpecHandle();
 		SpecHandle.IsValid() && IsActive())
@@ -74,7 +74,7 @@ void UGunslingerFocusAbility::OnFocusTimerExpired()
 	}
 }
 
-void UGunslingerFocusAbility::EndAbility(
+void UEC_GunslingerFocusAbility::EndAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,

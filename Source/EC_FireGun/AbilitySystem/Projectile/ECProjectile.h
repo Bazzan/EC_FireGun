@@ -11,16 +11,16 @@ class UAbilitySystemComponent;
 class UGameplayEffect;
 
 /**
- * Replicated traveling projectile spawned by UShootProjectileAbility.
+ * Replicated traveling projectile spawned by UEC_ShootProjectileAbility.
  * Applies GAS-based damage on collision via a pre-built GameplayEffectSpec.
  */
 UCLASS(Abstract)
-class EC_FIREGUN_API AECProjectile : public AActor
+class EC_FIREGUN_API AEC_Projectile : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	AECProjectile();
+	AEC_Projectile();
 
 	/**
 	 * Called by the spawning ability to pass damage context.

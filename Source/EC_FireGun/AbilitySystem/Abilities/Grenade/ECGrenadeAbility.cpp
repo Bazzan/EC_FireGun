@@ -10,7 +10,7 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
-UECGrenadeAbility::UECGrenadeAbility()
+UEC_GrenadeAbility::UEC_GrenadeAbility()
 {
 	FGameplayTagContainer Tags;
 	Tags.AddTag(EC_GameplayTags::Ability_Grenade);
@@ -20,7 +20,7 @@ UECGrenadeAbility::UECGrenadeAbility()
 	ActivationBlockedTags.AddTag(EC_GameplayTags::Cooldown_Grenade);
 }
 
-void UECGrenadeAbility::ActivateAbility(
+void UEC_GrenadeAbility::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,
@@ -41,7 +41,7 @@ void UECGrenadeAbility::ActivateAbility(
 
 	if (!GrenadeClass)
 	{
-		UE_LOG(LogClassAbility, Error, TEXT("ECGrenadeAbility: GrenadeClass is null"));
+		UE_LOG(LogClassAbility, Error, TEXT("EC_GrenadeAbility: GrenadeClass is null"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
@@ -50,7 +50,7 @@ void UECGrenadeAbility::ActivateAbility(
 	const UCameraComponent* Camera = Avatar ? Avatar->GetFirstPersonCameraComponent() : nullptr;
 	if (!Avatar || !Camera)
 	{
-		UE_LOG(LogClassAbility, Warning, TEXT("ECGrenadeAbility: missing avatar or camera"));
+		UE_LOG(LogClassAbility, Warning, TEXT("EC_GrenadeAbility: missing avatar or camera"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
@@ -66,7 +66,7 @@ void UECGrenadeAbility::ActivateAbility(
 	SpawnParams.Owner = const_cast<AEC_PlayerCharacter*>(Avatar);
 	SpawnParams.Instigator = const_cast<AEC_PlayerCharacter*>(Avatar);
 
-	AECGrenade* Grenade = GetWorld()->SpawnActor<AECGrenade>(
+	AEC_Grenade* Grenade = GetWorld()->SpawnActor<AEC_Grenade>(
 		GrenadeClass, SpawnLocation, AimRotation, SpawnParams);
 
 	if (Grenade)
@@ -93,7 +93,7 @@ void UECGrenadeAbility::ActivateAbility(
 	}
 	else
 	{
-		UE_LOG(LogClassAbility, Warning, TEXT("ECGrenadeAbility: failed to spawn grenade"));
+		UE_LOG(LogClassAbility, Warning, TEXT("EC_GrenadeAbility: failed to spawn grenade"));
 	}
 
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);

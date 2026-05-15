@@ -11,7 +11,7 @@
 #include "TimerManager.h"
 #include "DrawDebugHelpers.h"
 
-AECGrenade::AECGrenade()
+AEC_Grenade::AEC_Grenade()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
@@ -34,7 +34,7 @@ AECGrenade::AECGrenade()
 	ProjectileMovement->ProjectileGravityScale = 1.0f;
 }
 
-void AECGrenade::InitDamage(
+void AEC_Grenade::InitDamage(
 	TSubclassOf<UGameplayEffect> InDamageEffect,
 	float InDamage,
 	UAbilitySystemComponent* InSourceASC)
@@ -44,7 +44,7 @@ void AECGrenade::InitDamage(
 	SourceASC = InSourceASC;
 }
 
-void AECGrenade::BeginPlay()
+void AEC_Grenade::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -56,16 +56,16 @@ void AECGrenade::BeginPlay()
 		CollisionComponent->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
 
-	CollisionComponent->OnComponentHit.AddDynamic(this, &AECGrenade::OnHit);
+	CollisionComponent->OnComponentHit.AddDynamic(this, &AEC_Grenade::OnHit);
 
 	if (HasAuthority() && MaxLifetime > 0.0f)
 	{
 		GetWorld()->GetTimerManager().SetTimer(
-			LifetimeTimerHandle, this, &AECGrenade::OnLifetimeExpired, MaxLifetime, false);
+			LifetimeTimerHandle, this, &AEC_Grenade::OnLifetimeExpired, MaxLifetime, false);
 	}
 }
 
-void AECGrenade::OnHit(
+void AEC_Grenade::OnHit(
 	UPrimitiveComponent* HitComponent,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp,
@@ -80,7 +80,7 @@ void AECGrenade::OnHit(
 	Explode();
 }
 
-void AECGrenade::OnLifetimeExpired()
+void AEC_Grenade::OnLifetimeExpired()
 {
 	if (!bHasExploded && HasAuthority())
 	{
@@ -88,7 +88,7 @@ void AECGrenade::OnLifetimeExpired()
 	}
 }
 
-void AECGrenade::Explode()
+void AEC_Grenade::Explode()
 {
 	if (bHasExploded)
 	{
@@ -156,7 +156,7 @@ void AECGrenade::Explode()
 	if (DestroyDelay > 0.0f && World)
 	{
 		World->GetTimerManager().SetTimer(
-			DestroyTimerHandle, this, &AECGrenade::OnDestroyTimer, DestroyDelay, false);
+			DestroyTimerHandle, this, &AEC_Grenade::OnDestroyTimer, DestroyDelay, false);
 	}
 	else
 	{
@@ -164,7 +164,7 @@ void AECGrenade::Explode()
 	}
 }
 
-void AECGrenade::ApplyExplosionDamageToActor(AActor* Target, const FVector& ExplosionLocation)
+void AEC_Grenade::ApplyExplosionDamageToActor(AActor* Target, const FVector& ExplosionLocation)
 {
 	if (!IsValid(Target) || !DamageEffectClass || !SourceASC.IsValid())
 	{
@@ -181,7 +181,7 @@ void AECGrenade::ApplyExplosionDamageToActor(AActor* Target, const FVector& Expl
 	{
 		// Per project rule: do not fall back to UGameplayStatics::ApplyDamage.
 		UE_LOG(LogClassAbility, Verbose,
-			TEXT("AECGrenade: target %s has no ASC, skipping damage."), *Target->GetName());
+			TEXT("AEC_Grenade: target %s has no ASC, skipping damage."), *Target->GetName());
 		return;
 	}
 
@@ -211,7 +211,7 @@ void AECGrenade::ApplyExplosionDamageToActor(AActor* Target, const FVector& Expl
 	}
 }
 
-void AECGrenade::OnDestroyTimer()
+void AEC_Grenade::OnDestroyTimer()
 {
 	Destroy();
 }

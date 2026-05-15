@@ -10,6 +10,7 @@ namespace EC_GameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Shoot_Projectile);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Ultimate);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Ultimate_Gunslinger_Focus);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dash);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Grenade);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Grenade_Gunslinger_Frag);
 
@@ -20,6 +21,7 @@ namespace EC_GameplayTags
 
 	// Cooldowns (granted by cooldown GameplayEffects)
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Ultimate);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Dash);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Grenade);
 
 	// SetByCaller data keys
